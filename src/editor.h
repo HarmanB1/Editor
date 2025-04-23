@@ -9,7 +9,8 @@ class Editor{
         void run();
 
     private:
-        void userInput();
+        void moveInput(int ch);
+        void getInput();
         void refreshScreen();
 
         std::vector<std::string> content;

@@ -3,12 +3,15 @@ project(Editor)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+include_directories(src)
+
 
 find_package(Curses REQUIRED)
+include_directories(${CURSES_INCLUDE_DIRS})
 
 add_executable(editor 
-    main.cpp 
-    editor.cpp
+    src/main.cpp 
+    src/editor.cpp
 )
 
 target_link_libraries(editor ${CURSES_LIBRARIES})
