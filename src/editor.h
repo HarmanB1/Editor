@@ -1,5 +1,5 @@
 #pragma once
-#include <ncurses.h>>
+#include <ncurses.h>
 #include <vector>
 #include <string>
 class Editor{
@@ -18,4 +18,4 @@ class Editor{
 
     
 
-}
+};
