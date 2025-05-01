@@ -8,6 +8,9 @@ Editor::Editor(): cursorX(0), cursorY(0) {
     echo();
     keypad(stdscr, TRUE);
     curs_set(1);  
+    mousemask(ALL_MOUSE_EVENTS, NULL);
+    mouseinterval(0);
+
     content.push_back(""); //starts empty line
     running = true;
 
@@ -32,7 +35,23 @@ void Editor::run(){
 
 void Editor::getInput(){
     int ch = getch();
-    doInput(ch);
+    if(ch = KEY_MOUSE){
+        doMouse();
+    }
+    else{
+        doInput(ch);
+    }
+    
+    
+}
+
+void Editor::doMouse(){
+    MEVENT event;
+    if(getmouse(&event)== OK){
+        if(event.bstate&)
+    }
+
+
 }
 
 

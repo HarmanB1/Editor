@@ -11,6 +11,7 @@ class Editor{
     private:
         void doInput(int ch);
         void getInput();
+        void doMouse();
         
         
 
