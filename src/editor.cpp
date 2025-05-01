@@ -8,6 +8,7 @@ Editor::Editor(): cursorX(0), cursorY(0) {
     keypad(stdscr, TRUE);
     curs_set(1);  
     content.push_back(""); //starts empty line
+    running = true;
 
 }
 
@@ -17,7 +18,7 @@ Editor::~Editor(){
 
 void Editor::run(){
     
-    while(true){
+    while(running){
         clear();
         for(size_t i=0; i<content.size(); i++){
             mvprintw(i, 0, content[i].c_str());
@@ -90,7 +91,8 @@ void Editor::doInput(int ch){
             break;
         case 27:
         //acsi for escape
-            return;
+            running = false;
+            break;
         default:
             if(isprint(ch)){
                 content[cursorY].insert(cursorX, 1, ch);

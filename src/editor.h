@@ -16,6 +16,7 @@ class Editor{
 
         std::vector<std::string> content; //content of each line index representing y 
         int cursorX, cursorY;
+        bool running; //indicator to stop running program
 
 
     
