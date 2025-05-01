@@ -1,6 +1,8 @@
 ///to do make sure mouse clicks are less percise
 //have mouse clikc all aras
 //have to do scrolling
+//to do make sure to save on quit
+//add settings colours
 
 #include "editor.h"
 #include <iostream>
@@ -45,7 +47,7 @@ void Editor::run(){
         getmaxyx(stdscr, row, col);
         attron(COLOR_PAIR(2));
         mvhline(row - 1, 0, ' ', col); // Draw empty line with color
-        mvprintw(row - 1, 0, " ESC: Quit | Ctrl+S: Save | Ctrl+F: Find ");
+        mvprintw(row - 1, 0, " ESC: Quit | Ctrl+S: Save | Ctrl+L: Load| Ctrl+F: Find | Ctrl+U: Settings Menu ");
         attroff(COLOR_PAIR(2));
 
         for(size_t i=0; i<content.size()&& i < row - 1; i++){
