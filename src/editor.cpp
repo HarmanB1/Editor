@@ -2,6 +2,7 @@
 #include <iostream>
 
 Editor::Editor(): cursorX(0), cursorY(0) {
+   
     //use ncurses library
     initscr(); //starts cursues
     raw();
@@ -9,6 +10,8 @@ Editor::Editor(): cursorX(0), cursorY(0) {
     keypad(stdscr, TRUE);
     curs_set(1);  
     mousemask(ALL_MOUSE_EVENTS, NULL);
+   printf("\033[?1003h\n"); // Enable mouse movement events
+fflush(stdout);
     mouseinterval(0);
 
     content.push_back(""); //starts empty line
@@ -17,7 +20,11 @@ Editor::Editor(): cursorX(0), cursorY(0) {
 }
 
 Editor::~Editor(){
+    printf("\033[?1003l\n"); // Disable mouse events
+fflush(stdout);
+   
     endwin();
+   
 }
 
 void Editor::run(){
@@ -35,12 +42,12 @@ void Editor::run(){
 
 void Editor::getInput(){
     int ch = getch();
-    if(ch = KEY_MOUSE){
+    if (ch == KEY_MOUSE) {
         doMouse();
-    }
-    else{
+    } else {
         doInput(ch);
     }
+    
     
     
 }
@@ -48,8 +55,22 @@ void Editor::getInput(){
 void Editor::doMouse(){
     MEVENT event;
     if(getmouse(&event)== OK){
-        if(event.bstate&)
+        if(event.bstate& BUTTON1_CLICKED){
+             
+            cursorY = event.y;
+            cursorX = event.x;
+
+            //bound checking
+            if(cursorY >= content.size()){
+                cursorY = content.size()-1;
+            }
+            if(cursorX > content[cursorY].size()){
+                cursorX = content[cursorY].size();
+            }
+        }
+
     }
+   
 
 
 }
