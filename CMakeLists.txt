@@ -15,3 +15,8 @@ add_executable(editor
 )
 
 target_link_libraries(editor ${CURSES_LIBRARIES})
+
+add_custom_command(TARGET editor POST_BUILD
+    COMMAND ./editor
+    COMMENT "RUNNING"
+)

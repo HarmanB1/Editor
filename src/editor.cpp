@@ -1,4 +1,5 @@
 #include "editor.h"
+#include <iostream>
 
 Editor::Editor(): cursorX(0), cursorY(0) {
     //use ncurses library
@@ -38,21 +39,43 @@ void Editor::getInput(){
 void Editor::doInput(int ch){
     switch(ch){
         case KEY_UP: if(cursorY> 0){
+            
             cursorY--;
+            cursorX=content[cursorY].size()-1;
+            if(content[cursorY].size()==0){
+                cursorX=0;
+            }
             break;
         }
+        else{
+                break;
+            }
         case KEY_DOWN: if(cursorY<content.size()-1){
             cursorY++;
+            cursorX=content[cursorY].size()-1;
+            if(content[cursorY].size()==0){
+                cursorX=0;
+            }
+            break;
+        }else{
+            content.push_back("");
+            cursorY++;
+            cursorX=0;
             break;
         }
         case KEY_LEFT: if(cursorX >0){
             cursorX--;
             break;
-        }
+        }else{
+                break;
+            }
         case KEY_RIGHT: if(cursorX < content[cursorY].size()){
             cursorX++;
             break;
-        }
+            
+        }else{
+                break;
+            }
         case 10:
         //asci for enter
         {
@@ -69,8 +92,9 @@ void Editor::doInput(int ch){
             if(cursorX>0){
                 if(cursorX>0){
                     //normal deletion
-                    content[cursorY].erase(cursorX-1,1);
+                    content[cursorY].erase(cursorX,1);
                     cursorX--;
+                    
                 }else if(cursorY>0){
                     //deletion if cursor is on start of line
                     cursorX = content[cursorY-1].size();
@@ -91,13 +115,17 @@ void Editor::doInput(int ch){
             break;
         case 27:
         //acsi for escape
+            mvprintw(cursorY+1, 0, "ENDING PROGRAM");
+            refresh();
             running = false;
             break;
         default:
             if(isprint(ch)){
                 content[cursorY].insert(cursorX, 1, ch);
+             
                 cursorX++;
             }
+
             break;
     }
     //have bound checker
