@@ -1,3 +1,7 @@
+///to do make sure mouse clicks are less percise
+//have mouse clikc all aras
+//have to do scrolling
+
 #include "editor.h"
 #include <iostream>
 
@@ -5,6 +9,11 @@ Editor::Editor(): cursorX(0), cursorY(0) {
    
     //use ncurses library
     initscr(); //starts cursues
+
+    start_color();
+    use_default_colors();
+    init_pair(1, COLOR_BLACK, COLOR_WHITE);
+    init_pair(2, COLOR_WHITE, COLOR_GREEN);
     raw();
     echo();
     keypad(stdscr, TRUE);
@@ -31,7 +40,15 @@ void Editor::run(){
     
     while(running){
         clear();
-        for(size_t i=0; i<content.size(); i++){
+        
+        int row, col;
+        getmaxyx(stdscr, row, col);
+        attron(COLOR_PAIR(2));
+        mvhline(row - 1, 0, ' ', col); // Draw empty line with color
+        mvprintw(row - 1, 0, " ESC: Quit | Ctrl+S: Save | Ctrl+F: Find ");
+        attroff(COLOR_PAIR(2));
+
+        for(size_t i=0; i<content.size()&& i < row - 1; i++){
             mvprintw(i, 0, content[i].c_str());
         }
         move(cursorY, cursorX);
