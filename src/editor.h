@@ -9,11 +9,12 @@ class Editor{
         void run();
 
     private:
-        void moveInput(int ch);
+        void doInput(int ch);
         void getInput();
-        void refreshScreen();
+        
+        
 
-        std::vector<std::string> content;
+        std::vector<std::string> content; //content of each line index representing y 
         int cursorX, cursorY;
 
 
