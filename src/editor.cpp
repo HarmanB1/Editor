@@ -16,8 +16,13 @@ Editor::~Editor(){
 }
 
 void Editor::run(){
-    mvprintw(0, 0, content.at(0).c_str());
+    
     while(true){
+        clear();
+        for(size_t i=0; i<content.size(); i++){
+            mvprintw(i, 0, content[i].c_str());
+        }
+        move(cursorY, cursorX);
         refresh();
         getInput();
     }
