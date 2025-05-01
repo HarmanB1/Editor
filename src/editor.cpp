@@ -50,6 +50,7 @@ void Editor::doInput(int ch){
         else{
                 break;
             }
+
         case KEY_DOWN: if(cursorY<content.size()-1){
             cursorY++;
             cursorX=content[cursorY].size()-1;
@@ -63,12 +64,14 @@ void Editor::doInput(int ch){
             cursorX=0;
             break;
         }
+
         case KEY_LEFT: if(cursorX >0){
             cursorX--;
             break;
         }else{
                 break;
             }
+            
         case KEY_RIGHT: if(cursorX < content[cursorY].size()){
             cursorX++;
             break;
@@ -88,11 +91,11 @@ void Editor::doInput(int ch){
             break;
 
         }
-        case KEY_BACKSPACE:
-            if(cursorX>0){
+        case 127:
+            
                 if(cursorX>0){
                     //normal deletion
-                    content[cursorY].erase(cursorX,1);
+                    content[cursorY].erase(cursorX-1,1);
                     cursorX--;
                     
                 }else if(cursorY>0){
@@ -106,7 +109,7 @@ void Editor::doInput(int ch){
                 break;
 
                 //backspace
-            }
+            
 
         case ' ':
         //adding space
@@ -115,8 +118,10 @@ void Editor::doInput(int ch){
             break;
         case 27:
         //acsi for escape
-            mvprintw(cursorY+1, 0, "ENDING PROGRAM");
+            clear();
+            mvprintw(0, 0, "ENDING PROGRAM");
             refresh();
+            napms(1000);
             running = false;
             break;
         default:
