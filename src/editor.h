@@ -1,7 +1,10 @@
 #pragma once
+
+
 #include <ncurses.h>
 #include <vector>
 #include <string>
+
 class Editor{
     public:
         Editor();
@@ -23,3 +26,4 @@ class Editor{
     
 
 };
+
