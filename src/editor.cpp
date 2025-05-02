@@ -6,6 +6,7 @@
 
 #include "editor.h"
 #include <iostream>
+#include <ncurses.h>
 
 Editor::Editor(): cursorX(0), cursorY(0) {
    
