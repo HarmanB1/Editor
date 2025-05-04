@@ -22,7 +22,7 @@ Editor::Editor(): cursorX(0), cursorY(0) {
     keypad(stdscr, TRUE);
     curs_set(1);  
     mousemask(ALL_MOUSE_EVENTS, NULL);
-   printf("\033[?1003h\n"); // Enable mouse movement events
+    printf("\033[?1003h\n"); // Enable mouse movement events
 fflush(stdout);
     mouseinterval(0);
 
@@ -33,7 +33,7 @@ fflush(stdout);
 
 Editor::~Editor(){
     printf("\033[?1003l\n"); // Disable mouse events
-fflush(stdout);
+    fflush(stdout);
    
     endwin();
    
@@ -51,7 +51,7 @@ void Editor::run(){
         mvprintw(row - 1, 0, " ESC: Quit | Ctrl+S: Save | Ctrl+L: Load| Ctrl+F: Find | Ctrl+U: Settings Menu ");
         attroff(COLOR_PAIR(2));
 
-        for(size_t i=0; i<content.size()&& i < row - 1; i++){
+        for(int i=0; i<content.size()&& i < row - 1; i++){
             mvprintw(i, 0, content[i].c_str());
         }
         move(cursorY, cursorX);
