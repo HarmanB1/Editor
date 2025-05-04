@@ -1,8 +1,8 @@
 #pragma once
-
-
+#include "fileIO.h"
 #include <vector>
 #include <string>
+
 
 class Editor{
     public:
@@ -14,7 +14,10 @@ class Editor{
         void doInput(int ch);
         void getInput();
         void doMouse();
-        
+        void save();
+        void load();
+        void find();
+        void settings();
         
 
         std::vector<std::string> content; //content of each line index representing y 
@@ -22,7 +25,7 @@ class Editor{
         bool running; //indicator to stop running program
 
 
-    
+
 
 };
 

@@ -8,6 +8,7 @@
 #include <iostream>
 #include <ncurses.h>
 
+
 Editor::Editor(): cursorX(0), cursorY(0) {
    
     //use ncurses library
@@ -23,7 +24,7 @@ Editor::Editor(): cursorX(0), cursorY(0) {
     curs_set(1);  
     mousemask(ALL_MOUSE_EVENTS, NULL);
     printf("\033[?1003h\n"); // Enable mouse movement events
-fflush(stdout);
+    fflush(stdout);
     mouseinterval(0);
 
     content.push_back(""); //starts empty line
@@ -59,6 +60,25 @@ void Editor::run(){
         getInput();
     }
 }
+
+void Editor::save(){
+    return fileIO::save();
+}
+        
+void Editor::load(){
+    return fileIO::load();
+}
+        
+void Editor::find(){
+
+}
+        
+void Editor::settings(){
+
+}
+
+
+
 
 void Editor::getInput(){
     int ch = getch();
@@ -98,6 +118,15 @@ void Editor::doMouse(){
 
 void Editor::doInput(int ch){
     switch(ch){
+        case 12: //for ctrl l
+
+        case 19: //for ctrl s
+
+        case 6: //for ctrl f
+
+        case 21: //for ctrl u
+
+
         case KEY_UP: if(cursorY> 0){
             
             cursorY--;
