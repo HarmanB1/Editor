@@ -64,12 +64,13 @@ void Editor::run(){
     }
 }
 
+
 void Editor::save(std::string filepath,std::vector<std::string>& content, std::vector<std::string>& content_backup) {
     
     std::string userPath(filepath);
 
     
-
+    clear();
     if (fileIO::save(userPath, content)) {
         mvprintw(3, 0, "File saved successfully.");
     } else {
