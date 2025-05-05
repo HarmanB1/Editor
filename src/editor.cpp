@@ -61,7 +61,7 @@ void Editor::run(){
     }
 }
 
-void Editor::save(const std::string& filepath, std::vector<std::string>& content, std::vector<std::string>& content_backup) {
+void Editor::save(std::vector<std::string>& content, std::vector<std::string>& content_backup) {
     clear();
     attron(COLOR_PAIR(2));
     int row, col;
@@ -111,7 +111,7 @@ void Editor::save(const std::string& filepath, std::vector<std::string>& content
 }
 
         
-void Editor::load(const std::string& filepath, std::vector<std::string>& content, std::vector<std::string>& content_backup) {
+void Editor::load(std::vector<std::string>& content, std::vector<std::string>& content_backup) {
     clear();
     attron(COLOR_PAIR(2));
     int row, col;
@@ -215,8 +215,13 @@ void Editor::doMouse(){
 void Editor::doInput(int ch){
     switch(ch){
         case 12: //for ctrl l
+            content = backup_content;
+            load(content, backup_content);
 
         case 19: //for ctrl s
+            content = backup_content;
+            save(content, backup_content);
+
 
         case 6: //for ctrl f
 

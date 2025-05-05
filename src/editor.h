@@ -14,8 +14,8 @@ class Editor{
         void doInput(int ch);
         void getInput();
         void doMouse();
-        void save(const std::string& filepath, std::vector<std::string>& content, std::vector<std::string>& content_backup);
-        void load(const std::string& filepath, std::vector<std::string>& conten, std::vector<std::string>& content_backup);
+        void save(std::vector<std::string>& content, std::vector<std::string>& content_backup);
+        void load(std::vector<std::string>& conten, std::vector<std::string>& content_backup);
         void find();
         void settings();
         
