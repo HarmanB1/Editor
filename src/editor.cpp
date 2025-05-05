@@ -64,46 +64,11 @@ void Editor::run(){
     }
 }
 
-void Editor::save(std::vector<std::string>& content, std::vector<std::string>& content_backup) {
-    clear();
-    attron(COLOR_PAIR(2));
-    int row, col;
-    getmaxyx(stdscr, row, col);
-    mvhline(0, 0, ' ', col);
-    mvprintw(0, 0, "ESC: Cancel | Type in path to save file:");
-    mvprintw(1, 0, "filename: ");
-    echo();
-    curs_set(1);
-    char pathInput[256];
-    memset(pathInput, 0, sizeof(pathInput));
-    move(1, 10);
+void Editor::save(std::string filepath,std::vector<std::string>& content, std::vector<std::string>& content_backup) {
+    
+    std::string userPath(filepath);
 
-    int ch;
-    int i = 0;
-       nodelay(stdscr, FALSE); 
-    while (i < 255 && (ch = getch()) != '\n') {
-        if (ch == 27) { // ESC
-            noecho();
-            curs_set(1);
-            content = content_backup; // Restore content
-            mvprintw(3, 0, "Save cancelled. Press any key to return.");
-            getch();
-            return;
-        }
-        if (isprint(ch)) {
-            pathInput[i++] = ch;
-            
-        }
-    }
-    noecho();
-    curs_set(1);
-    std::string userPath(pathInput);
-
-    if (userPath.empty()) {
-        mvprintw(3, 0, "No file name entered. Press any key to return.");
-        getch();
-        return;
-    }
+    
 
     if (fileIO::save(userPath, content)) {
         mvprintw(3, 0, "File saved successfully.");
@@ -115,7 +80,7 @@ void Editor::save(std::vector<std::string>& content, std::vector<std::string>& c
 }
 
         
-void Editor::load(std::vector<std::string>& content, std::vector<std::string>& content_backup) {
+void Editor::load(std::string& filepath,std::vector<std::string>& content, std::vector<std::string>& content_backup) {
     clear();
     attron(COLOR_PAIR(2));
     int row, col;
@@ -131,7 +96,7 @@ void Editor::load(std::vector<std::string>& content, std::vector<std::string>& c
 
     int ch;
     int i = 0;
-       nodelay(stdscr, FALSE); 
+       
     while (i < 255 && (ch = getch()) != '\n') {
         if (ch == 27) { // ESC
             noecho();
@@ -148,6 +113,7 @@ void Editor::load(std::vector<std::string>& content, std::vector<std::string>& c
     }
     noecho();
     curs_set(1);
+    filepath = pathInput;
     std::string userPath(pathInput);
 
     if (userPath.empty()) {
@@ -221,12 +187,12 @@ void Editor::doInput(int ch){
     switch(ch){
         case 12: //for ctrl l
             backup_content= content;
-            load(content, backup_content);
+            load(filepath, content, backup_content);
             break;
 
         case 19: //for ctrl s
             backup_content=content;
-            save(content, backup_content);
+            save(filepath, content, backup_content);
             break;
 
 

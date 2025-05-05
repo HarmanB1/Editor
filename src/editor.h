@@ -14,8 +14,8 @@ class Editor{
         void doInput(int ch);
         void getInput();
         void doMouse();
-        void save(std::vector<std::string>& content, std::vector<std::string>& content_backup);
-        void load(std::vector<std::string>& conten, std::vector<std::string>& content_backup);
+        void save(std::string filepath, std::vector<std::string>& content, std::vector<std::string>& content_backup);
+        void load(std::string& filepath, std::vector<std::string>& conten, std::vector<std::string>& content_backup);
         void find();
         void settings();
         
@@ -25,6 +25,7 @@ class Editor{
         std::vector<std::string> backup_content;
         int cursorX, cursorY;
         bool running; //indicator to stop running program
+        std::string filepath;
 
 
 
