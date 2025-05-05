@@ -80,30 +80,58 @@ void Editor::save(const std::string& filepath, std::vector<std::string>& content
     }
 }
         
-void Editor::load(const std::string& filepath, std::vector<std::string>& content, std::vector<std::string>& content_backup){
+void Editor::load(const std::string& filepath, std::vector<std::string>& content, std::vector<std::string>& content_backup) {
     clear();
     attron(COLOR_PAIR(2));
     int row, col;
     getmaxyx(stdscr, row, col);
     mvhline(0, 0, ' ', col);
-    mvprintw(1,0, "ESC: Go back| Type in path to file and press info");
-    int ch = getch();
-    if(ch == 27){
-        for(int i=0; i<content_backup.size()&& i < row - 1; i++){
-            mvprintw(i, 0, content[i].c_str());
-        }
-        content = content_backup;
-        refresh();
-    }
-    else{
-        refresh();
-        if(fileIO::load(filepath, content)){
+    mvprintw(0, 0, "ESC: Cancel | Type in path to load file:");
+    mvprintw(1, 0, "filename: ");
+    echo();
+    curs_set(1);
+    char pathInput[256];
+    memset(pathInput, 0, sizeof(pathInput));
+    move(1, 10);
 
+    int ch;
+    int i = 0;
+    while (i < 255 && (ch = getch()) != '\n') {
+        if (ch == 27) { // ESC
+            noecho();
+            curs_set(0);
+            content = content_backup; // Restore
+            mvprintw(3, 0, "Load cancelled. Press any key to return.");
+            getch();
+            return;
+        }
+        if (isprint(ch)) {
+            pathInput[i++] = ch;
+            addch(ch);
+        }
     }
+    noecho();
+    curs_set(0);
+    std::string userPath(pathInput);
+
+    if (userPath.empty()) {
+        mvprintw(3, 0, "No file name entered. Press any key to return.");
+        getch();
+        return;
     }
-    
-    
+
+    content_backup = content;  // backup before loading
+
+    if (fileIO::load(userPath, content)) {
+        mvprintw(3, 0, "File loaded successfully.");
+    } else {
+        content = content_backup; // restore on failure
+        mvprintw(3, 0, "Failed to load file.");
+    }
+    mvprintw(4, 0, "Press any key to return.");
+    getch();
 }
+
         
 void Editor::find(){
 
