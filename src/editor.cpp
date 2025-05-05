@@ -80,6 +80,7 @@ void Editor::save(std::vector<std::string>& content, std::vector<std::string>& c
 
     int ch;
     int i = 0;
+       nodelay(stdscr, FALSE); 
     while (i < 255 && (ch = getch()) != '\n') {
         if (ch == 27) { // ESC
             noecho();
@@ -91,11 +92,11 @@ void Editor::save(std::vector<std::string>& content, std::vector<std::string>& c
         }
         if (isprint(ch)) {
             pathInput[i++] = ch;
-            addch(ch);
+            
         }
     }
     noecho();
-    curs_set(0);
+    curs_set(1);
     std::string userPath(pathInput);
 
     if (userPath.empty()) {
@@ -130,6 +131,7 @@ void Editor::load(std::vector<std::string>& content, std::vector<std::string>& c
 
     int ch;
     int i = 0;
+       nodelay(stdscr, FALSE); 
     while (i < 255 && (ch = getch()) != '\n') {
         if (ch == 27) { // ESC
             noecho();
@@ -141,11 +143,11 @@ void Editor::load(std::vector<std::string>& content, std::vector<std::string>& c
         }
         if (isprint(ch)) {
             pathInput[i++] = ch;
-            addch(ch);
+            
         }
     }
     noecho();
-    curs_set(0);
+    curs_set(1);
     std::string userPath(pathInput);
 
     if (userPath.empty()) {
