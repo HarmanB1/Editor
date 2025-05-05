@@ -61,12 +61,48 @@ void Editor::run(){
     }
 }
 
-void Editor::save(){
-    return fileIO::save();
+void Editor::save(const std::string& filepath, std::vector<std::string>& content, std::vector<std::string>& content_backup){
+    clear();
+    attron(COLOR_PAIR(2));
+    int row, col;
+    getmaxyx(stdscr, row, col);
+    mvhline(0, 0, ' ', col);
+    mvprintw(0,0, "ESC: Go back| Type in path to file and press info");
+    mvprintw(1,0, "filename=");
+    move(2, 0);
+    int ch = getch();
+    if(ch == 27){
+
+    }
+    refresh();
+    if(fileIO::save(filepath, content)==true){
+
+    }
 }
         
-void Editor::load(){
-    return fileIO::load();
+void Editor::load(const std::string& filepath, std::vector<std::string>& content, std::vector<std::string>& content_backup){
+    clear();
+    attron(COLOR_PAIR(2));
+    int row, col;
+    getmaxyx(stdscr, row, col);
+    mvhline(0, 0, ' ', col);
+    mvprintw(1,0, "ESC: Go back| Type in path to file and press info");
+    int ch = getch();
+    if(ch == 27){
+        for(int i=0; i<content_backup.size()&& i < row - 1; i++){
+            mvprintw(i, 0, content[i].c_str());
+        }
+        content = content_backup;
+        refresh();
+    }
+    else{
+        refresh();
+        if(fileIO::load(filepath, content)){
+
+    }
+    }
+    
+    
 }
         
 void Editor::find(){
@@ -114,6 +150,7 @@ void Editor::doMouse(){
 
 
 }
+
 
 
 void Editor::doInput(int ch){

@@ -14,13 +14,15 @@ class Editor{
         void doInput(int ch);
         void getInput();
         void doMouse();
-        void save();
-        void load();
+        void save(const std::string& filepath, std::vector<std::string>& content, std::vector<std::string>& content_backup);
+        void load(const std::string& filepath, std::vector<std::string>& conten, std::vector<std::string>& content_backup);
         void find();
         void settings();
         
+        
 
         std::vector<std::string> content; //content of each line index representing y 
+        std::vector<std::string> backup_content;
         int cursorX, cursorY;
         bool running; //indicator to stop running program
 
