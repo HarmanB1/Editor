@@ -3,6 +3,9 @@
 //have to do scrolling
 //to do make sure to save on quit
 //add settings colours
+//fix bug where after no curosr is, 
+//fix double repetition of letters
+
 
 #include "editor.h"
 #include <iostream>
@@ -215,12 +218,14 @@ void Editor::doMouse(){
 void Editor::doInput(int ch){
     switch(ch){
         case 12: //for ctrl l
-            content = backup_content;
+            backup_content= content;
             load(content, backup_content);
+            break;
 
         case 19: //for ctrl s
-            content = backup_content;
+            backup_content=content;
             save(content, backup_content);
+            break;
 
 
         case 6: //for ctrl f
