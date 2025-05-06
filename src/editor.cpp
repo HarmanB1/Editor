@@ -7,7 +7,7 @@
 //fix double repetition of letters
 
 //fix seg fault on empty file
-///seg fault happened after writing in terminal so prob habe to clean content before hand
+///seg fault happens after saving
 
 
 #include "editor.h"
@@ -111,6 +111,7 @@ void Editor::load(std::string& filepath,std::vector<std::string>& content, std::
             return;
         }
         if(ch == 127){
+            noecho();
             if(i>0){
                     //deletion
                     i--;
@@ -119,7 +120,6 @@ void Editor::load(std::string& filepath,std::vector<std::string>& content, std::
                     clrtoeol();
                     printw("%s", pathInput);
                     move(1, 10+i);
-
                     
                 }
                 
@@ -127,9 +127,10 @@ void Editor::load(std::string& filepath,std::vector<std::string>& content, std::
         }
             
                 
-
+        //noecho
         else if (isprint(ch)) {
             pathInput[i++] = ch;
+            addch(ch);
             
         }
     }
@@ -147,6 +148,9 @@ void Editor::load(std::string& filepath,std::vector<std::string>& content, std::
     content_backup = content;  // backup before loading
 
     if (fileIO::load(userPath, content)) {
+        if(content.empty()){
+            content.push_back("");
+        }
         mvprintw(3, 0, "File loaded successfully.");
     } else {
         content = content_backup; // restore on failure
