@@ -11,6 +11,8 @@
 
 //have to fix sving
 
+//setup saved save file system perhaps text file
+
 
 #include "editor.h"
 #include <iostream>
@@ -113,6 +115,7 @@ void Editor::load(std::string& filepath,std::vector<std::string>& content, std::
     int i = 0; //x position
        
     while (i < 255 && (ch = getch()) != '\n') {
+        noecho();
         if (ch == 27) { // ESC
             noecho();
             curs_set(1);
@@ -122,7 +125,7 @@ void Editor::load(std::string& filepath,std::vector<std::string>& content, std::
             return;
         }
         if(ch == 127){
-            noecho();
+            
             if(i>0){
                     //deletion
                     i--;
