@@ -78,7 +78,7 @@ void Editor::save(std::string filepath,std::vector<std::string>& content, std::v
 
     if (userPath.empty()) {
         clear();
-        mvprintw(3, 0, "No file name entered or file. Press any key to return.");
+        mvprintw(0, 0, "No file name entered or file. Press any key to return.");
         refresh();
         getch();
         return;
@@ -88,11 +88,11 @@ void Editor::save(std::string filepath,std::vector<std::string>& content, std::v
     
     clear();
     if (fileIO::save(userPath, content)) {
-        mvprintw(3, 0, "File saved successfully.");
+        mvprintw(0, 0, "File saved successfully.");
     } else {
-        mvprintw(3, 0, "Failed to save file.");
+        mvprintw(0, 0, "Failed to save file.");
     }
-    mvprintw(4, 0, "Press any key to return.");
+    mvprintw(1, 0, "Press any key to return.");
     getch();
 }
 
@@ -105,7 +105,7 @@ void Editor::load(std::string& filepath,std::vector<std::string>& content, std::
     mvhline(0, 0, ' ', col);
     mvprintw(0, 0, "ESC: Cancel | Type in path to load file:");
     mvprintw(1, 0, "filename: ");
-    echo();
+    
     curs_set(1);
     char pathInput[256];
     memset(pathInput, 0, sizeof(pathInput));
@@ -113,14 +113,14 @@ void Editor::load(std::string& filepath,std::vector<std::string>& content, std::
 
     int ch;
     int i = 0; //x position
-       
+    noecho();
     while (i < 255 && (ch = getch()) != '\n') {
-        noecho();
+        
         if (ch == 27) { // ESC
             noecho();
             curs_set(1);
             content = content_backup; // Restore
-            mvprintw(3, 0, "Load cancelled. Press any key to return.");
+            mvprintw(0, 0, "Load cancelled. Press any key to return.");
             getch();
             return;
         }
@@ -152,7 +152,7 @@ void Editor::load(std::string& filepath,std::vector<std::string>& content, std::
     std::string userPath(pathInput);
 
     if (userPath.empty()) {
-        mvprintw(3, 0, "No file name entered. Press any key to return.");
+        mvprintw(0, 0, "No file name entered. Press any key to return.");
         filepath = "";
         getch();
         return;
@@ -164,14 +164,14 @@ void Editor::load(std::string& filepath,std::vector<std::string>& content, std::
         if(content.empty()){
             content.push_back("");
         }
-        mvprintw(3, 0, "File loaded successfully.");
+        mvprintw(0, 0, "File loaded successfully.");
     } else {
         content = content_backup; // restore on failure
         
-        mvprintw(3, 0, "Failed to load file.");
+        mvprintw(0, 0, "Failed to load file.");
         filepath = "";
     }
-    mvprintw(4, 0, "Press any key to return.");
+    mvprintw(1, 0, "Press any key to return.");
     move(0,0);
     refresh();
     getch();
@@ -248,7 +248,7 @@ void Editor::doInput(int ch){
         case KEY_UP: if(cursorY> 0){
             
             cursorY--;
-            cursorX=content[cursorY].size()-1;
+            cursorX=content[cursorY].size();
             if(content[cursorY].size()==0){
                 cursorX=0;
             }
@@ -260,7 +260,7 @@ void Editor::doInput(int ch){
 
         case KEY_DOWN: if(cursorY<content.size()-1){
             cursorY++;
-            cursorX=content[cursorY].size()-1;
+            cursorX=content[cursorY].size();
             if(content[cursorY].size()==0){
                 cursorX=0;
             }
