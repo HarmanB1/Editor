@@ -6,6 +6,9 @@
 //fix bug where after no curosr is, 
 //fix double repetition of letters
 
+//fix seg fault on empty file
+///seg fault happened after writing in terminal so prob habe to clean content before hand
+
 
 #include "editor.h"
 #include <iostream>
@@ -96,7 +99,7 @@ void Editor::load(std::string& filepath,std::vector<std::string>& content, std::
     move(1, 10);
 
     int ch;
-    int i = 0;
+    int i = 0; //x position
        
     while (i < 255 && (ch = getch()) != '\n') {
         if (ch == 27) { // ESC
@@ -107,7 +110,25 @@ void Editor::load(std::string& filepath,std::vector<std::string>& content, std::
             getch();
             return;
         }
-        if (isprint(ch)) {
+        if(ch == 127){
+            if(i>0){
+                    //deletion
+                    i--;
+                    pathInput[i] ='\0';
+                    move(1,10);
+                    clrtoeol();
+                    printw("%s", pathInput);
+                    move(1, 10+i);
+
+                    
+                }
+                
+
+        }
+            
+                
+
+        else if (isprint(ch)) {
             pathInput[i++] = ch;
             
         }
@@ -188,11 +209,13 @@ void Editor::doInput(int ch){
     switch(ch){
         case 12: //for ctrl l
             backup_content= content;
+            content.clear();
             load(filepath, content, backup_content);
             break;
 
         case 19: //for ctrl s
             backup_content=content;
+            content.clear();
             save(filepath, content, backup_content);
             break;
 
