@@ -124,9 +124,7 @@ void Editor::load(std::string& filepath,std::vector<std::string>& content, std::
                 }
                 
 
-        }
-            
-                
+        }    
         //noecho
         else if (isprint(ch)) {
             pathInput[i++] = ch;
@@ -145,7 +143,7 @@ void Editor::load(std::string& filepath,std::vector<std::string>& content, std::
         return;
     }
 
-    content_backup = content;  // backup before loading
+      // backup before loading
 
     if (fileIO::load(userPath, content)) {
         if(content.empty()){
@@ -154,9 +152,12 @@ void Editor::load(std::string& filepath,std::vector<std::string>& content, std::
         mvprintw(3, 0, "File loaded successfully.");
     } else {
         content = content_backup; // restore on failure
+        
         mvprintw(3, 0, "Failed to load file.");
     }
     mvprintw(4, 0, "Press any key to return.");
+    move(0,0);
+    refresh();
     getch();
 }
 
@@ -218,8 +219,7 @@ void Editor::doInput(int ch){
             break;
 
         case 19: //for ctrl s
-            backup_content=content;
-            content.clear();
+            //backup_content=content;
             save(filepath, content, backup_content);
             break;
 
