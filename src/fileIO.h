@@ -7,7 +7,7 @@ class fileIO{
 public:
     static bool load(const std::string& filepath, std::vector<std::string>& content);
     static bool save(const std::string& filepath, std::vector<std::string>& content);
-private:
+
     static bool file_exists(const std::string& filepath);
 };
 

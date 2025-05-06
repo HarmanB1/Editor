@@ -9,6 +9,8 @@
 //fix seg fault on empty file
 ///seg fault happens after saving
 
+//have to fix sving
+
 
 #include "editor.h"
 #include <iostream>
@@ -72,6 +74,15 @@ void Editor::save(std::string filepath,std::vector<std::string>& content, std::v
     
     std::string userPath(filepath);
 
+    if (userPath.empty()) {
+        clear();
+        mvprintw(3, 0, "No file name entered or file. Press any key to return.");
+        refresh();
+        getch();
+        return;
+    }
+   
+    
     
     clear();
     if (fileIO::save(userPath, content)) {
@@ -139,6 +150,7 @@ void Editor::load(std::string& filepath,std::vector<std::string>& content, std::
 
     if (userPath.empty()) {
         mvprintw(3, 0, "No file name entered. Press any key to return.");
+        filepath = "";
         getch();
         return;
     }
@@ -154,6 +166,7 @@ void Editor::load(std::string& filepath,std::vector<std::string>& content, std::
         content = content_backup; // restore on failure
         
         mvprintw(3, 0, "Failed to load file.");
+        filepath = "";
     }
     mvprintw(4, 0, "Press any key to return.");
     move(0,0);
