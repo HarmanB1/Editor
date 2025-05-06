@@ -165,11 +165,14 @@ void Editor::load(std::string& filepath,std::vector<std::string>& content, std::
             content.push_back("");
         }
         mvprintw(0, 0, "File loaded successfully.");
+        cursorX=0;
+        cursorY=0;
     } else {
         content = content_backup; // restore on failure
         
         mvprintw(0, 0, "Failed to load file.");
         filepath = "";
+        
     }
     mvprintw(1, 0, "Press any key to return.");
     move(0,0);
