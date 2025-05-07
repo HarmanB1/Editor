@@ -69,7 +69,7 @@ void Editor::run(){
         mvhline(row-1, 0, ' ', col); // Draw empty line with color
 
         std::string nameDisplay = filepath.empty() ? "No file entered" : filepath;
-        std::string bar = " ESC: Quit | Ctrl+S: Save | Ctrl+L: Load| Ctrl+F: Find | Ctrl+U: Settings Menu " + nameDisplay;
+        std::string bar = " ESC: Quit | Ctrl+S: Save | Ctrl+L: Load| Ctrl+F: Find | Ctrl+U: Settings Menu | " + nameDisplay;
         mvprintw(row-1, 0, bar.c_str());
         attroff(COLOR_PAIR(2));
 
