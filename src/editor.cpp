@@ -1,17 +1,8 @@
-
-
-//have to do scrolling
-//to do make sure to save on quit
+//add settings
+//add finder
+//settings txt
+//add opton to clear
 //add settings colours
-//fix bug where after no curosr is, 
-//fix double repetition of letters
-
-
-
-//have to fix sving
-
-//setup saved save file system perhaps text file
-
 
 #include "editor.h"
 #include <iostream>
