@@ -71,15 +71,15 @@ void Editor::run(){
         attroff(COLOR_PAIR(2));
 
         for (int i = 0; i < visRows; i++) {
-    int lineIdx = scrollY + i;
-    if (lineIdx >= content.size()) break;
-    mvprintw(i, 0, "%s", content[lineIdx].c_str());
-}
+            int lineIdx = scrollY + i;
+            if (lineIdx >= content.size()) break;
+            mvprintw(i, 0, "%s", content[lineIdx].c_str());
+        }
        
         
 
         int screenCursorY = cursorY - scrollY;
-move(screenCursorY, cursorX);
+        move(screenCursorY, cursorX);
         refresh();
         getInput();
     }
