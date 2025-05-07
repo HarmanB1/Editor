@@ -3,6 +3,21 @@
 //settings txt
 //add opton to clear
 //add settings colours
+//undo redo
+//save status
+//file diffing
+//copy pasting cliboard
+//bookmarks
+//cursor pos
+//cut text k
+//refresh text from pull og 
+
+
+//settings
+//themes
+
+
+
 
 #include "editor.h"
 #include <iostream>
