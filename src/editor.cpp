@@ -356,6 +356,7 @@ void Editor::doInput(int ch){
                 while(done){
                     int ch = getch();
                     if(ch == 89 || ch == 121){
+                        save(filepath, content, backup_content);
                         break;
 
                     }else if(ch == 78 || ch == 110 ){
