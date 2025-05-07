@@ -26,6 +26,8 @@ class Editor{
         int cursorX, cursorY;
         bool running; //indicator to stop running program
         std::string filepath;
+        int scrollY; //tracks scroll pos
+        
 
 
 

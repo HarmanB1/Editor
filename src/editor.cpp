@@ -1,13 +1,12 @@
-///to do make sure mouse clicks are less percise
-//have mouse clikc all aras
+
+
 //have to do scrolling
 //to do make sure to save on quit
 //add settings colours
 //fix bug where after no curosr is, 
 //fix double repetition of letters
 
-//fix seg fault on empty file
-///seg fault happens after saving
+
 
 //have to fix sving
 
@@ -19,11 +18,11 @@
 #include <ncurses.h>
 
 
-Editor::Editor(): cursorX(0), cursorY(0) {
+Editor::Editor(): cursorX(0), cursorY(0), scrollY(0) {
    
     //use ncurses library
     initscr(); //starts cursues
-
+    scrollok(stdscr, TRUE); 
     start_color();
     use_default_colors();
     init_pair(1, COLOR_BLACK, COLOR_WHITE);
@@ -53,19 +52,34 @@ Editor::~Editor(){
 void Editor::run(){
     
     while(running){
-        clear();
+        erase();
         
         int row, col;
         getmaxyx(stdscr, row, col);
+        int visRows = row-1;
+
+        if (cursorY < scrollY) {
+            scrollY = cursorY;
+        } else if (cursorY >= scrollY + visRows) {
+            scrollY = cursorY - visRows + 1;
+        }
+
+        //status bar
         attron(COLOR_PAIR(2));
-        mvhline(row - 1, 0, ' ', col); // Draw empty line with color
-        mvprintw(row - 1, 0, " ESC: Quit | Ctrl+S: Save | Ctrl+L: Load| Ctrl+F: Find | Ctrl+U: Settings Menu ");
+        mvhline(row-1, 0, ' ', col); // Draw empty line with color
+        mvprintw(row-1, 0, " ESC: Quit | Ctrl+S: Save | Ctrl+L: Load| Ctrl+F: Find | Ctrl+U: Settings Menu ");
         attroff(COLOR_PAIR(2));
 
-        for(int i=0; i<content.size()&& i < row - 1; i++){
-            mvprintw(i, 0, content[i].c_str());
-        }
-        move(cursorY, cursorX);
+        for (int i = 0; i < visRows; i++) {
+    int lineIdx = scrollY + i;
+    if (lineIdx >= content.size()) break;
+    mvprintw(i, 0, "%s", content[lineIdx].c_str());
+}
+       
+        
+
+        int screenCursorY = cursorY - scrollY;
+move(screenCursorY, cursorX);
         refresh();
         getInput();
     }
@@ -258,6 +272,7 @@ void Editor::doInput(int ch){
             break;
         }
         else{
+            
                 break;
             }
 
