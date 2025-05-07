@@ -67,9 +67,13 @@ void Editor::run(){
         //status bar
         attron(COLOR_PAIR(2));
         mvhline(row-1, 0, ' ', col); // Draw empty line with color
-        mvprintw(row-1, 0, " ESC: Quit | Ctrl+S: Save | Ctrl+L: Load| Ctrl+F: Find | Ctrl+U: Settings Menu ");
+
+        std::string nameDisplay = filepath.empty() ? "No file entered" : filepath;
+        std::string bar = " ESC: Quit | Ctrl+S: Save | Ctrl+L: Load| Ctrl+F: Find | Ctrl+U: Settings Menu " + nameDisplay;
+        mvprintw(row-1, 0, bar.c_str());
         attroff(COLOR_PAIR(2));
 
+        //printing
         for (int i = 0; i < visRows; i++) {
             int lineIdx = scrollY + i;
             if (lineIdx >= content.size()) break;
