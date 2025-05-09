@@ -1,5 +1,4 @@
 //add settings
-//add finder
 //settings txt
 //add opton to clear
 //add settings colours
@@ -75,7 +74,7 @@ void Editor::run(){
         mvhline(row-1, 0, ' ', col); // Draw empty line with color
 
         std::string nameDisplay = filepath.empty() ? "No file entered" : filepath;
-        std::string bar = " ESC: Quit | Ctrl+S: Save | Ctrl+L: Load| Ctrl+F: Find | Ctrl+U: Settings Menu | " + nameDisplay;
+        std::string bar = " ESC: Quit | Ctrl+S: Save | Ctrl+L: Load| Ctrl+F: RESET | Ctrl+U: Settings Menu | " + nameDisplay;
         mvprintw(row-1, 0, bar.c_str());
         attroff(COLOR_PAIR(2));
 
@@ -268,6 +267,9 @@ void Editor::doInput(int ch){
 
 
         case 6: //for ctrl f
+            filepath = "";
+            clear();
+            
 
         case 21: //for ctrl u
 
