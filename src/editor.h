@@ -27,6 +27,7 @@ class Editor{
         void load(std::string& filepath, std::vector<std::string>& conten, std::vector<std::string>& content_backup);
         void find();
         void settings();
+        void refresh();
         
         
         EditorSetting setting;

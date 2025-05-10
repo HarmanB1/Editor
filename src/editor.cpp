@@ -11,7 +11,6 @@
 //cut text k
 //refresh text from pull og 
 
-
 //settings
 //themes
 
@@ -287,6 +286,8 @@ void Editor::doMouse(){
 
 void Editor::doInput(int ch){
     switch(ch){
+        case 18: //for ctrl r
+            refresh();
         case 12: //for ctrl l
             backup_content= content;
             content.clear();
