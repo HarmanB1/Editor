@@ -209,6 +209,19 @@ void Editor::find(){
 }
         
 void Editor::settings(){
+    int row, col;
+    getmaxyx(stdscr, row, col);
+
+    WINDOW* settingWIN = newwin(row, col, 2,4);
+    box(settingWIN, 0, 0);
+    keypad(settingWIN, TRUE);
+
+    int selected = 0;
+    bool inSetting = true;
+
+    while (inSetting){
+        
+    }
 
 }
 

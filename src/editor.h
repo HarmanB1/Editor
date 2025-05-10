@@ -25,7 +25,7 @@ class Editor{
         void settings();
         
         
-        EditorSetting settings;
+        EditorSetting setting;
         void showSettings();
         void saveSetting();
         void loadSetting();
