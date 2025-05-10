@@ -5,6 +5,10 @@
 
 struct EditorSetting{
     bool autosave= true;
+    bool lineNumb = true;
+    bool wordWrap = false;
+    bool saveOnClose = true;
+
 
 
 };
