@@ -8,9 +8,6 @@ struct EditorSetting{
     bool lineNumb = true;
     bool wordWrap = false;
     bool saveOnClose = true;
-
-
-
 };
 
 class Editor{

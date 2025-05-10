@@ -230,6 +230,15 @@ void Editor::settings(){
         mvprintw(1, 2, "EDITOR SETTING");
         
 
+        //settings display
+        mvwprintw(settingWIN, 1, 2, "Editor Settings");
+        mvwprintw(settingWIN, 3, 4, "%s Autosave: %s", selected == 0 ? ">" : " ", setting.autosave ? "ON" : "OFF");
+        mvwprintw(settingWIN, 4, 4, "%s Display Line Number: %s", selected == 1 ? ">" : " ", setting.lineNumb ? "ON" : "OFF");
+        mvwprintw(settingWIN, 5, 4, "%s Word Wrap: %d", selected == 2 ? ">" : " ", setting.wordWrap ? "ON" : "OFF");
+        mvwprintw(settingWIN, 6, 4, "%s Ask for Save on close %s", selected == 3 ? ">" : " ", setting.saveOnClose? "ON" : "OFF");
+        mvwprintw(settingWIN, 7, 4, "%s Save Settings", selected == 4 ? ">" : " ");
+        mvwprintw(settingWIN, 8, 4, "%s Exit Settings", selected == 5 ? ">" : " ");
+
         wrefresh(settingWIN);
         int ch = wgetch(settingWIN);
 
