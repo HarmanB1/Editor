@@ -3,6 +3,11 @@
 #include <vector>
 #include <string>
 
+struct EditorSetting{
+    bool autosave= true;
+
+
+};
 
 class Editor{
     public:
@@ -20,6 +25,9 @@ class Editor{
         void settings();
         
         
+        EditorSetting settings;
+        std::vecotr<std
+
 
         std::vector<std::string> content; //content of each line index representing y 
         std::vector<std::string> backup_content;
