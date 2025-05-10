@@ -241,16 +241,57 @@ void Editor::settings(){
 
         wrefresh(settingWIN);
         int ch = wgetch(settingWIN);
+        switch(ch){
+            case KEY_UP:
+                selected = selected > 0 ? selected -1:5;
+                break;
+            case KEY_DOWN:
+                selected = selected < 5 ? selected+1: 5;
+                break;
+
+            case KEY_LEFT:
+            case KEY_RIGHT:
+            case ' ':
+                //acts as a toggle
+                switch(selected){
+                    case 0: setting.autosave = !setting.autosave; break;
+                    case 1: setting.lineNumb = !setting.lineNumb; break;
+                    case 2: setting.wordWrap = !setting.wordWrap; break;
+                    case 3: setting.saveOnClose = !setting.saveOnClose; break;
+                    
+                }
+
+
+            case 10: //ascii for enter
+                switch(selected){
+                    case 4: saveSetting(); break;
+                    case 5: inSetting = false; break;
+
+                }
+                   
+
+
+
+        }
 
 
     }
 
+  
+
+
+
+    //restore window and delte
     copywin(backup, stdscr, 0, 0, 0, 0, row-1, col-1, 0);
     delwin(backup);
     delwin(settingWIN);
     refresh();
 
 
+}
+
+void Editor::saveSetting(){
+    
 }
 
 
