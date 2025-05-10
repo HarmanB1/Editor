@@ -11,6 +11,7 @@
 //cut text k
 //refresh text from pull og 
 
+//must fix saving of thing
 //settings
 //themes
 
@@ -216,7 +217,7 @@ void Editor::settings(){
     WINDOW* backup = newwin(row, col, 0, 0);
     copywin(stdscr, backup, 0, 0, 0, 0, row-1, col-1, 0);
 
-    WINDOW* settingWIN = newwin(row, col, 2,4);
+    WINDOW* settingWIN = newwin(row, col, 0,0);
     box(settingWIN, 0, 0);
     keypad(settingWIN, TRUE);
 
@@ -246,7 +247,7 @@ void Editor::settings(){
                 selected = selected > 0 ? selected -1:5;
                 break;
             case KEY_DOWN:
-                selected = selected < 5 ? selected+1: 5;
+                selected = selected < 5 ? selected+1: 0;
                 break;
 
             case KEY_LEFT:
@@ -291,7 +292,7 @@ void Editor::settings(){
 }
 
 void Editor::saveSetting(){
-    
+
 }
 
 
@@ -353,9 +354,13 @@ void Editor::doInput(int ch){
         case 6: //for ctrl f
             filepath = "";
             clear();
+            break;
             
 
         case 21: //for ctrl u
+            settings();
+
+
 
 
         case KEY_UP: if(cursorY> 0){

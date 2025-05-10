@@ -24,13 +24,13 @@ class Editor{
         void load(std::string& filepath, std::vector<std::string>& conten, std::vector<std::string>& content_backup);
         void find();
         void settings();
-        void refresh();
+       // void refresh();
         
         
         EditorSetting setting;
-        void showSettings();
+       // void showSettings();
         void saveSetting();
-        void loadSetting();
+       // void loadSetting();
 
 
         std::vector<std::string> content; //content of each line index representing y 
