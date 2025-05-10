@@ -212,6 +212,11 @@ void Editor::settings(){
     int row, col;
     getmaxyx(stdscr, row, col);
 
+
+    //creates backup of working window
+    WINDOW* backup = newwin(row, col, 0, 0);
+    copywin(stdscr, backup, 0, 0, 0, 0, row-1, col-1, 0);
+
     WINDOW* settingWIN = newwin(row, col, 2,4);
     box(settingWIN, 0, 0);
     keypad(settingWIN, TRUE);
@@ -220,8 +225,23 @@ void Editor::settings(){
     bool inSetting = true;
 
     while (inSetting){
+        werase(settingWIN);
+        box(settingWIN, 0, 0);
+
+        mvprintw(1, 2, "EDITOR SETTING");
         
+
+        wrefresh(settingWIN);
+        int ch = wgetch(settingWIN);
+
+
     }
+
+    copywin(backup, stdscr, 0, 0, 0, 0, row-1, col-1, 0);
+    delwin(backup);
+    delwin(settingWIN);
+    refresh();
+
 
 }
 
