@@ -26,7 +26,9 @@ class Editor{
         
         
         EditorSetting settings;
-        std::vecotr<std
+        void showSettings();
+        void saveSetting();
+        void loadSetting();
 
 
         std::vector<std::string> content; //content of each line index representing y 
