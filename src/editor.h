@@ -36,6 +36,7 @@ class Editor{
        // void showSettings();
         void saveSetting();
        // void loadSetting();
+       std::string getConfigPath();
 
        
 

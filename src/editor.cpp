@@ -22,6 +22,9 @@
 
 
 
+
+
+
 Editor::Editor(): cursorX(0), cursorY(0), scrollY(0) {
    
     //use ncurses library
@@ -31,8 +34,7 @@ Editor::Editor(): cursorX(0), cursorY(0), scrollY(0) {
     //colours
     start_color();
     use_default_colors();
-    init_pair(1, COLOR_BLACK, COLOR_WHITE);
-    init_pair(2, COLOR_WHITE, COLOR_GREEN);
+    applyCol();
 
 
     raw();
@@ -59,7 +61,7 @@ Editor::~Editor(){
    
 }
 
-std::string getConfigPath(){
+std::string Editor::getConfigPath(){
     namespace fs = std::filesystem;
     fs::path cwd = fs::current_path();
     fs::path config = cwd/ "../config/settings.cfg";
@@ -73,6 +75,7 @@ void Editor::applyCol(){
 
 
 }
+
 
 void Editor::run(){
     
@@ -312,6 +315,17 @@ void Editor::settings(){
 }
 
 void Editor::saveSetting(){
+    std::ofstream config_file(getConfigPath());
+    if(config_file){
+        config_file << setting.autosave << '\n'
+        << setting.lineNumb << '\n'
+        << setting.wordWrap 
+        << setting.saveOnClose << '\n'
+        << setting.textCol << '\n'
+        << setting.statusBarCol << '\n'
+        << setting.backgroundCol << '\n';
+    }
+
 
 }
 
