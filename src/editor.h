@@ -40,6 +40,7 @@ class Editor{
         std::string getConfigPath();
         
         std::vector<int> colArr = {COLOR_BLACK,COLOR_RED,COLOR_GREEN,COLOR_YELLOW, COLOR_BLUE, COLOR_MAGENTA,COLOR_CYAN, COLOR_WHITE};
+        std::vector<std::string> colArrString = {"Black", "Red", "Green", "Yellow", "Blue", "Magenta", "Cyan", "White"};
         int textcol_index=7;
         int statusBarCol_index=2;
         int backgroundCol_index=0;

@@ -270,14 +270,16 @@ void Editor::settings(){
         
 
         //settings display
-        mvwprintw(settingWIN, 1, 2, "Editor Settings");
+        mvwprintw(settingWIN, 1, 2, "Editor Settings  use arrow key up and down to navigate, and use arrow keys, left, right or space bar to");
+        mvwprintw(settingWIN, 2, 2, " change setting, press enter on save settings and exit settings");
+        
         mvwprintw(settingWIN, 3, 4, "%s Autosave: %s", selected == 0 ? ">" : " ", setting.autosave ? "ON" : "OFF");
         mvwprintw(settingWIN, 4, 4, "%s Display Line Number: %s", selected == 1 ? ">" : " ", setting.lineNumb ? "ON" : "OFF");
         mvwprintw(settingWIN, 5, 4, "%s Word Wrap: %d", selected == 2 ? ">" : " ", setting.wordWrap ? "ON" : "OFF");
         mvwprintw(settingWIN, 6, 4, "%s Ask for Save on close %s", selected == 4 ? ">" : " ", setting.saveOnClose? "ON" : "OFF");
-        mvwprintw(settingWIN, 7, 4, "%s TextColour %d", selected == 5 ? ">" : " ", colArr.at(textcol_index));
-        mvwprintw(settingWIN, 8, 4, "%s Statusbar colour %d", selected == 6 ? ">" : " ", colArr.at(statusBarCol_index));
-        mvwprintw(settingWIN, 9, 4, "%s background colour %d", selected == 7 ? ">" : " ", colArr.at(backgroundCol_index));
+        mvwprintw(settingWIN, 7, 4, "%s TextColour %s", selected == 5 ? ">" : " ", colArrString.at(textcol_index));
+        mvwprintw(settingWIN, 8, 4, "%s Statusbar colour %s", selected == 6 ? ">" : " ", colArrString.at(statusBarCol_index));
+        mvwprintw(settingWIN, 9, 4, "%s background colour %s", selected == 7 ? ">" : " ", colArrString.at(backgroundCol_index));
         mvwprintw(settingWIN, 10, 4, "%s Save Settings", selected == 8 ? ">" : " ");
         mvwprintw(settingWIN, 11, 4, "%s Exit Settings", selected == 9 ? ">" : " ");
 
@@ -289,7 +291,7 @@ void Editor::settings(){
                 selected = selected > 0 ? selected -1:9;
                 break;
             case KEY_DOWN:
-                selected = selected < 5 ? selected+1: 0;
+                selected = selected < 9 ? selected+1: 0;
                 break;
 
             case KEY_LEFT:
@@ -354,6 +356,8 @@ void Editor::saveSetting(){
         << setting.textCol << '\n'
         << setting.statusBarCol << '\n'
         << setting.backgroundCol << '\n';
+    }else{
+        printf("erorr erorr");
     }
 
 }
