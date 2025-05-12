@@ -18,7 +18,7 @@
 #include "editor.h"
 #include <iostream>
 
-
+constexpr int COLSIZE = 8;
 
 
 
@@ -30,6 +30,10 @@ Editor::Editor(): cursorX(0), cursorY(0), scrollY(0) {
     //use ncurses library
     initscr(); //starts cursues
     scrollok(stdscr, TRUE); 
+
+    //loadsettings 
+    loadSetting(); 
+
 
     //colours
     start_color();
@@ -271,9 +275,9 @@ void Editor::settings(){
         mvwprintw(settingWIN, 4, 4, "%s Display Line Number: %s", selected == 1 ? ">" : " ", setting.lineNumb ? "ON" : "OFF");
         mvwprintw(settingWIN, 5, 4, "%s Word Wrap: %d", selected == 2 ? ">" : " ", setting.wordWrap ? "ON" : "OFF");
         mvwprintw(settingWIN, 6, 4, "%s Ask for Save on close %s", selected == 4 ? ">" : " ", setting.saveOnClose? "ON" : "OFF");
-        mvwprintw(settingWIN, 7, 4, "%s TextColour %s", selected == 5 ? ">" : " ", setting.textCol);
-        mvwprintw(settingWIN, 8, 4, "%s Statusbar colour %s", selected == 6 ? ">" : " ", setting.statusBarCol);
-        mvwprintw(settingWIN, 9, 4, "%s background colour %s", selected == 7 ? ">" : " ", setting.backgroundCol);
+        mvwprintw(settingWIN, 7, 4, "%s TextColour %d", selected == 5 ? ">" : " ", colArr.at(textcol_index));
+        mvwprintw(settingWIN, 8, 4, "%s Statusbar colour %d", selected == 6 ? ">" : " ", colArr.at(statusBarCol_index));
+        mvwprintw(settingWIN, 9, 4, "%s background colour %d", selected == 7 ? ">" : " ", colArr.at(backgroundCol_index));
         mvwprintw(settingWIN, 10, 4, "%s Save Settings", selected == 8 ? ">" : " ");
         mvwprintw(settingWIN, 11, 4, "%s Exit Settings", selected == 9 ? ">" : " ");
 
@@ -297,15 +301,25 @@ void Editor::settings(){
                     case 1: setting.lineNumb = !setting.lineNumb; break;
                     case 2: setting.wordWrap = !setting.wordWrap; break;
                     case 3: setting.saveOnClose = !setting.saveOnClose; break;
-                    case 
-                    
+                    case 5:
+                        textcol_index= (textcol_index+1)%COLSIZE;
+                        setting.textCol= colArr.at(textcol_index);
+                        break;
+                    case 6:
+                        statusBarCol_index= (statusBarCol_index+1)%COLSIZE;
+                        setting.statusBarCol= colArr.at(statusBarCol_index);
+                        break;
+                    case 7:
+                        backgroundCol_index= (backgroundCol_index+1)%COLSIZE;
+                        setting.backgroundCol= colArr.at(backgroundCol_index);
+                        break;    
                 }
 
 
             case 10: //ascii for enter
                 switch(selected){
-                    case 4: saveSetting(); break;
-                    case 5: inSetting = false; break;
+                    case 8: saveSetting(); break;
+                    case 9: inSetting = false; break;
 
                 }
                    
