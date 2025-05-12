@@ -119,7 +119,8 @@ void Editor::updateStatus(){
     mvhline(row-1, 0, ' ', col); // Draw empty line with color
 
     std::string nameDisplay = filepath.empty() ? "No file entered" : filepath;
-    std::string bar = " ESC: Quit | Ctrl+S: Save | Ctrl+L: Load| Ctrl+F: RESET | Ctrl+U: Settings Menu | " + nameDisplay;
+    std::string posInfo = "Ln " + std::to_string(cursorY+1)+ ", Col" + std::to_string(cursorX +1);
+    std::string bar = " ESC: Quit | ^S: Save | ^L: Load| ^F: New | ^U: Settings Menu | " + nameDisplay + " | "+posInfo;
     mvprintw(row-1, 0, bar.c_str());
     attroff(COLOR_PAIR(2));
 
