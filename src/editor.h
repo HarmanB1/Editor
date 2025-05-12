@@ -1,5 +1,5 @@
 #pragma once
-#include "fileIO.h"
+#include <filesystem>
 #include <vector>
 #include <string>
 
@@ -31,6 +31,8 @@ class Editor{
        // void showSettings();
         void saveSetting();
        // void loadSetting();
+
+       std::string getConfigPath();
 
 
         std::vector<std::string> content; //content of each line index representing y 

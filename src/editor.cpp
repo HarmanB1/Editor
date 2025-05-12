@@ -11,13 +11,10 @@
 //cut text k
 //refresh text from pull og 
 
-//must fix saving of thing
+//must fix saving of thing and of(test with files before )
 //settings
 //themes
-
-
-
-
+#include "fileIO.h"
 #include "editor.h"
 #include <iostream>
 #include <ncurses.h>
@@ -37,6 +34,7 @@ Editor::Editor(): cursorX(0), cursorY(0), scrollY(0) {
     keypad(stdscr, TRUE);
     curs_set(1);  
     mousemask(ALL_MOUSE_EVENTS, NULL);
+
     printf("\033[?1003h\n"); // Enable mouse movement events
     fflush(stdout);
     mouseinterval(0);
@@ -53,6 +51,22 @@ Editor::~Editor(){
     endwin();
    
 }
+
+std::string getConfigPath(){
+    namespace fs = std::filesystem;
+    
+    if(fs::exists("settings.cfg")){
+        return "settings.cfg";
+    }
+    auto Path = fs::current_path()  / "settings.cfg";
+    if(fs::exists(Path)){
+        return Path.string();
+    }
+
+    return Path.string();
+
+}
+
 
 void Editor::run(){
     
