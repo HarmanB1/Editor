@@ -68,6 +68,9 @@ std::string getConfigPath(){
 
 
 void Editor::applyCol(){
+    init_pair(1, setting.textCol, setting.backgroundCol);
+    init_pair(2, setting.textCol, setting.statusBarCol);
+
 
 }
 

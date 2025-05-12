@@ -11,6 +11,7 @@ struct EditorSetting{
     bool saveOnClose = true;
     int textCol = COLOR_WHITE;
     int statusBarCol = COLOR_GREEN;
+    int backgroundCol = COLOR_BLACK;
 };
 
 class Editor{
