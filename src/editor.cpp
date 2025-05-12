@@ -240,9 +240,7 @@ void Editor::load(std::string& filepath,std::vector<std::string>& content, std::
 }
 
         
-void Editor::find(){
 
-}
         
 void Editor::settings(){
     int row, col;
@@ -272,15 +270,19 @@ void Editor::settings(){
         mvwprintw(settingWIN, 3, 4, "%s Autosave: %s", selected == 0 ? ">" : " ", setting.autosave ? "ON" : "OFF");
         mvwprintw(settingWIN, 4, 4, "%s Display Line Number: %s", selected == 1 ? ">" : " ", setting.lineNumb ? "ON" : "OFF");
         mvwprintw(settingWIN, 5, 4, "%s Word Wrap: %d", selected == 2 ? ">" : " ", setting.wordWrap ? "ON" : "OFF");
-        mvwprintw(settingWIN, 6, 4, "%s Ask for Save on close %s", selected == 3 ? ">" : " ", setting.saveOnClose? "ON" : "OFF");
-        mvwprintw(settingWIN, 7, 4, "%s Save Settings", selected == 4 ? ">" : " ");
-        mvwprintw(settingWIN, 8, 4, "%s Exit Settings", selected == 5 ? ">" : " ");
+        mvwprintw(settingWIN, 6, 4, "%s Ask for Save on close %s", selected == 4 ? ">" : " ", setting.saveOnClose? "ON" : "OFF");
+        mvwprintw(settingWIN, 7, 4, "%s TextColour %s", selected == 5 ? ">" : " ", setting.textCol);
+        mvwprintw(settingWIN, 8, 4, "%s Statusbar colour %s", selected == 6 ? ">" : " ", setting.statusBarCol);
+        mvwprintw(settingWIN, 9, 4, "%s background colour %s", selected == 7 ? ">" : " ", setting.backgroundCol);
+        mvwprintw(settingWIN, 10, 4, "%s Save Settings", selected == 8 ? ">" : " ");
+        mvwprintw(settingWIN, 11, 4, "%s Exit Settings", selected == 9 ? ">" : " ");
 
         wrefresh(settingWIN);
+
         int ch = wgetch(settingWIN);
         switch(ch){
             case KEY_UP:
-                selected = selected > 0 ? selected -1:5;
+                selected = selected > 0 ? selected -1:9;
                 break;
             case KEY_DOWN:
                 selected = selected < 5 ? selected+1: 0;
@@ -295,6 +297,7 @@ void Editor::settings(){
                     case 1: setting.lineNumb = !setting.lineNumb; break;
                     case 2: setting.wordWrap = !setting.wordWrap; break;
                     case 3: setting.saveOnClose = !setting.saveOnClose; break;
+                    case 
                     
                 }
 

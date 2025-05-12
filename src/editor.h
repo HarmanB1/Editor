@@ -26,7 +26,7 @@ class Editor{
         void doMouse();
         void save(std::string filepath, std::vector<std::string>& content, std::vector<std::string>& content_backup);
         void load(std::string& filepath, std::vector<std::string>& conten, std::vector<std::string>& content_backup);
-        void find();
+        
         void settings();
         void applyCol();
         void updateStatus();
@@ -38,6 +38,7 @@ class Editor{
         void saveSetting();
         void loadSetting();
         std::string getConfigPath();
+        int col[8]= {COLOR_BLACK,COLOR_RED,COLOR_GREEN,COLOR_YELLOW, COLOR_BLUE, COLOR_MAGENTA,COLOR_CYAN, COLOR_WHITE};
 
        
 
