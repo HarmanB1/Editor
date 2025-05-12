@@ -14,6 +14,9 @@
 //must fix saving of thing and of(test with files before )
 //settings
 //themes
+
+//hav eto fix colour setting
+//have to fix print to terminal
 #include "fileIO.h"
 #include "editor.h"
 #include <iostream>
@@ -34,6 +37,7 @@ Editor::Editor(): cursorX(0), cursorY(0), scrollY(0) {
 
     //colours
     applyCol();
+    attron(COLOR_PAIR(1));
 
 
     raw();
@@ -53,6 +57,7 @@ Editor::Editor(): cursorX(0), cursorY(0), scrollY(0) {
 
 
 Editor::~Editor(){
+    
     printf("\033[?1003l\n"); // Disable mouse events
     fflush(stdout);
    
@@ -94,14 +99,23 @@ void Editor::run(){
         }
 
         //status bar
+        
         applyCol();
+        
         updateStatus();
 
+        bkgd(COLOR_PAIR(1));
+
         //printing
+        
         for (int i = 0; i < visRows; i++) {
             int lineIdx = scrollY + i;
             if (lineIdx >= content.size()) break;
+        
+            mvhline(i, 0, ' ', col);
             mvprintw(i, 0, "%s", content[lineIdx].c_str());
+            
+            
         }
        
         
