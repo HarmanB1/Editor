@@ -2,12 +2,15 @@
 #include <filesystem>
 #include <vector>
 #include <string>
+#include <ncurses.h>
 
 struct EditorSetting{
     bool autosave= true;
     bool lineNumb = true;
     bool wordWrap = false;
     bool saveOnClose = true;
+    int textCol = COLOR_WHITE;
+    int statusBarCol = COLOR_GREEN;
 };
 
 class Editor{

@@ -17,7 +17,7 @@
 #include "fileIO.h"
 #include "editor.h"
 #include <iostream>
-#include <ncurses.h>
+
 
 
 Editor::Editor(): cursorX(0), cursorY(0), scrollY(0) {
@@ -25,10 +25,14 @@ Editor::Editor(): cursorX(0), cursorY(0), scrollY(0) {
     //use ncurses library
     initscr(); //starts cursues
     scrollok(stdscr, TRUE); 
+
+    //colours
     start_color();
     use_default_colors();
     init_pair(1, COLOR_BLACK, COLOR_WHITE);
     init_pair(2, COLOR_WHITE, COLOR_GREEN);
+
+
     raw();
     echo();
     keypad(stdscr, TRUE);
