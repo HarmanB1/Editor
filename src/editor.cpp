@@ -20,6 +20,8 @@
 
 
 
+
+
 Editor::Editor(): cursorX(0), cursorY(0), scrollY(0) {
    
     //use ncurses library
@@ -48,6 +50,7 @@ Editor::Editor(): cursorX(0), cursorY(0), scrollY(0) {
 
 }
 
+
 Editor::~Editor(){
     printf("\033[?1003l\n"); // Disable mouse events
     fflush(stdout);
@@ -58,19 +61,15 @@ Editor::~Editor(){
 
 std::string getConfigPath(){
     namespace fs = std::filesystem;
-    
-    if(fs::exists("settings.cfg")){
-        return "settings.cfg";
-    }
-    auto Path = fs::current_path()  / "settings.cfg";
-    if(fs::exists(Path)){
-        return Path.string();
-    }
-
-    return Path.string();
-
+    fs::path cwd = fs::current_path();
+    fs::path config = cwd/ "../config/settings.cfg";
+    return config.lexically_normal().string();
 }
 
+
+void Editor::applyCol(){
+
+}
 
 void Editor::run(){
     

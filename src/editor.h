@@ -27,6 +27,7 @@ class Editor{
         void load(std::string& filepath, std::vector<std::string>& conten, std::vector<std::string>& content_backup);
         void find();
         void settings();
+        void applyCol();
        // void refresh();
         
         
@@ -35,7 +36,7 @@ class Editor{
         void saveSetting();
        // void loadSetting();
 
-       std::string getConfigPath();
+       
 
 
         std::vector<std::string> content; //content of each line index representing y 
