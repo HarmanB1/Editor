@@ -390,8 +390,6 @@ void Editor::doMouse(){
 
     }
    
-
-
 }
 
 
@@ -404,6 +402,8 @@ void Editor::doInput(int ch){
             backup_content= content;
             content.clear();
             load(filepath, content, backup_content);
+            content.push_back("");
+
             break;
 
         case 19: //for ctrl s
@@ -414,7 +414,9 @@ void Editor::doInput(int ch){
 
         case 6: //for ctrl f
             filepath = "";
+            
             clear();
+            cursorX = cursorY = 0;
             break;
             
 
