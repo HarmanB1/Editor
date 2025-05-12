@@ -93,13 +93,7 @@ void Editor::run(){
         }
 
         //status bar
-        attron(COLOR_PAIR(2));
-        mvhline(row-1, 0, ' ', col); // Draw empty line with color
-
-        std::string nameDisplay = filepath.empty() ? "No file entered" : filepath;
-        std::string bar = " ESC: Quit | Ctrl+S: Save | Ctrl+L: Load| Ctrl+F: RESET | Ctrl+U: Settings Menu | " + nameDisplay;
-        mvprintw(row-1, 0, bar.c_str());
-        attroff(COLOR_PAIR(2));
+        updateStatus();
 
         //printing
         for (int i = 0; i < visRows; i++) {
@@ -115,6 +109,20 @@ void Editor::run(){
         refresh();
         getInput();
     }
+}
+
+void Editor::updateStatus(){
+    int row, col;
+    getmaxyx(stdscr, row, col);
+
+    attron(COLOR_PAIR(2));
+    mvhline(row-1, 0, ' ', col); // Draw empty line with color
+
+    std::string nameDisplay = filepath.empty() ? "No file entered" : filepath;
+    std::string bar = " ESC: Quit | Ctrl+S: Save | Ctrl+L: Load| Ctrl+F: RESET | Ctrl+U: Settings Menu | " + nameDisplay;
+    mvprintw(row-1, 0, bar.c_str());
+    attroff(COLOR_PAIR(2));
+
 }
 
 

@@ -29,6 +29,7 @@ class Editor{
         void find();
         void settings();
         void applyCol();
+        void updateStatus();
        // void refresh();
         
         
