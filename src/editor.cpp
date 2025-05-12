@@ -319,16 +319,30 @@ void Editor::saveSetting(){
     if(config_file){
         config_file << setting.autosave << '\n'
         << setting.lineNumb << '\n'
-        << setting.wordWrap 
+        << setting.wordWrap << '\n'
         << setting.saveOnClose << '\n'
         << setting.textCol << '\n'
         << setting.statusBarCol << '\n'
         << setting.backgroundCol << '\n';
     }
 
-
 }
 
+void Editor::loadSetting(){
+    std::ifstream config_file(getConfigPath());
+    if(config_file){
+        config_file >> setting.autosave
+        >> setting.lineNumb
+        >> setting.wordWrap 
+        >> setting.saveOnClose
+        >> setting.textCol
+        >> setting.statusBarCol
+        >> setting.backgroundCol;
+    }
+
+    
+
+}
 
 
 
