@@ -69,6 +69,7 @@ Editor::~Editor(){
     reset_shell_mode(); 
    
     endwin();
+    system("stty sane 2>/dev/null");
    
 }
 
@@ -287,7 +288,7 @@ void Editor::direct(std::string& directory){
     int row, col;
     getmaxyx(stdscr, row, col);
     mvhline(0, 0, ' ', col);
-    mvprintw(0, 0, "ESC: Cancel | Type in directory such as /Users/JamesSmith/downloads/ (it must be in this form)");
+    mvprintw(0, 0, "ESC: Cancel | Type in directory such as /Users/JamesSmith/downloads/ (it must be in this form), to save, use save settings in settings");
     mvprintw(1, 0, "Directory: ");
     
     curs_set(1);
