@@ -287,13 +287,14 @@ void Editor::direct(std::string& directory){
     int ch;
     int i = 0; //x position
     noecho();
+    printw("%s", setting.directory);
     while (i < 255 && (ch = getch()) != '\n') {
         
         if (ch == 27) { // ESC
             noecho();
             curs_set(1);
             
-            mvprintw(0, 0, "Directory canelled. Press any key to return.");
+            mvprintw(0, 0, "Directory cancelled. Press any key to return.");
             getch();
             return;
         }
@@ -323,7 +324,7 @@ void Editor::direct(std::string& directory){
     directory = directoryUser;
     setting.directory = directory;
     
-    mvprintw(1, 0, "Press any key to return.");
+    mvprintw(1, 0, "Directory saved, Press any key to return.");
     move(0,0);
     refresh();
     getch();
