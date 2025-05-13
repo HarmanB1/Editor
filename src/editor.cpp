@@ -180,8 +180,8 @@ void Editor::save(std::string filepath,std::vector<std::string>& content, std::v
     getch();
 }
 
-        
 void Editor::load(std::string& filepath,std::vector<std::string>& content, std::vector<std::string>& content_backup) {
+        
     clear();
     attron(COLOR_PAIR(2));
     int row, col;
@@ -270,7 +270,63 @@ void Editor::load(std::string& filepath,std::vector<std::string>& content, std::
     getch();
 }
 
+void Editor::direct(std::string& directory){
+    clear();
+    attron(COLOR_PAIR(2));
+    int row, col;
+    getmaxyx(stdscr, row, col);
+    mvhline(0, 0, ' ', col);
+    mvprintw(0, 0, "ESC: Cancel | Type in directory such as /Users/JamesSmith/downloads");
+    mvprintw(1, 0, "Directory: ");
+    
+    curs_set(1);
+    char directoryUser[256];
+    memset(directoryUser, 0, sizeof(directoryUser));
+    move(1, 10);
+
+    int ch;
+    int i = 0; //x position
+    noecho();
+    while (i < 255 && (ch = getch()) != '\n') {
         
+        if (ch == 27) { // ESC
+            noecho();
+            curs_set(1);
+            
+            mvprintw(0, 0, "Directory canelled. Press any key to return.");
+            getch();
+            return;
+        }
+        if(ch == 127){
+            
+            if(i>0){//deletion
+                    i--;
+                    directoryUser[i] ='\0';
+                    move(1,10);
+                    clrtoeol();
+                    printw("%s", directoryUser);
+                    move(1, 10+i);
+                    
+                }
+                
+
+        }    
+        //noecho
+        else if (isprint(ch)) {
+            directoryUser[i++] = ch;
+            addch(ch);
+            
+        }
+    }
+    noecho();
+    curs_set(1);
+    directory = directoryUser;
+    
+    mvprintw(1, 0, "Press any key to return.");
+    move(0,0);
+    refresh();
+    getch();
+}
 
         
 void Editor::settings(){
@@ -445,6 +501,9 @@ void Editor::doMouse(){
 
 void Editor::doInput(int ch){
     switch(ch){
+        case 4: //for ctril d
+            direct(directory);
+            break;
         case 18: //for ctrl r
             refresh();
         case 12: //for ctrl l

@@ -26,6 +26,8 @@ class Editor{
         void doMouse();
         void save(std::string filepath, std::vector<std::string>& content, std::vector<std::string>& content_backup);
         void load(std::string& filepath, std::vector<std::string>& content, std::vector<std::string>& content_backup);
+        void direct(std::string& directory);
+
         
         void settings();
         void applyCol();
@@ -53,6 +55,7 @@ class Editor{
         int cursorX, cursorY;
         bool running; //indicator to stop running program
         std::string filepath;
+        std::string directory;
         int scrollY; //tracks scroll pos
         
 
