@@ -234,7 +234,13 @@ void Editor::load(std::string& filepath,std::vector<std::string>& content, std::
         return;
     }
 
-      // backup before loading
+    if(!fileIO::file_exists(userPath)){
+        mvprintw(3, 0, "no file of that name exists, creating file");
+        refresh();
+        fileIO::file_create(filepath);
+    }
+
+    
 
     if (fileIO::load(userPath, content)) {
         if(content.empty()){

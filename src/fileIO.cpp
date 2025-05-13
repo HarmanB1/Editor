@@ -2,8 +2,20 @@
 
 #include <sys/stat.h>
 
+bool fileIO::file_create(const std::string& filepath){
+    std::ofstream file_new(filepath);
+    if(!file_new.is_open()){
+        return false;
+    }
+
+    file_new.close();
+
+    //open again redundant test
+
+}
+
 bool fileIO::load(const std::string& filepath, std::vector<std::string>& content){
-    if(!file_exists(filepath)){return false;}
+    if(!file_exists(filepath)){}
 
     std::ifstream file(filepath);
     if(!file.is_open()){return false;}

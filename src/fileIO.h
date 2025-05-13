@@ -8,6 +8,7 @@ class fileIO{
 public:
     static bool load(const std::string& filepath, std::vector<std::string>& content);
     static bool save(const std::string& filepath, std::vector<std::string>& content);
+    static bool file_create(const std::string& filepath);
 
     static bool file_exists(const std::string& filepath);
 };
