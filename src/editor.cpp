@@ -145,7 +145,7 @@ void Editor::updateStatus(){
 
     std::string nameDisplay = filepath.empty() ? "No file entered" : filepath;
     std::string posInfo = "Ln " + std::to_string(cursorY+1)+ ", Col" + std::to_string(cursorX +1);
-    std::string bar = " ESC: Quit | ^S: Save | ^L: Load| ^F: New | ^U: Settings Menu | " + nameDisplay + " | "+posInfo;
+    std::string bar = " ESC: Quit | ^S: Save | ^L: Load| ^F: New | ^U: Settings Menu | " + nameDisplay + " | " + setting.directory + " | " + posInfo;
 
     if(bar.length()>static_cast<size_t>(col)){
         bar = bar.substr(0, col-3)+ "...";
