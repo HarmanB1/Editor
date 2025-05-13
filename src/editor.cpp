@@ -59,6 +59,14 @@ Editor::~Editor(){
     
     printf("\033[?1003l\n"); // Disable mouse events
     fflush(stdout);
+
+    //take care of Ncurses sequences
+    curs_set(1);
+    echo();
+    nocbreak();
+    keypad(stdscr, FALSE);
+    mouseinterval(0);
+    reset_shell_mode(); 
    
     endwin();
    
