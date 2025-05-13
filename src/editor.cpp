@@ -321,6 +321,7 @@ void Editor::direct(std::string& directory){
     noecho();
     curs_set(1);
     directory = directoryUser;
+    setting.directory = directory;
     
     mvprintw(1, 0, "Press any key to return.");
     move(0,0);
@@ -439,7 +440,8 @@ void Editor::saveSetting(){
         << setting.saveOnClose << '\n'
         << setting.textCol << '\n'
         << setting.statusBarCol << '\n'
-        << setting.backgroundCol << '\n';
+        << setting.backgroundCol << '\n'
+        << setting.directory << '\n';
     }else{
         printf("erorr erorr");
     }
@@ -455,7 +457,8 @@ void Editor::loadSetting(){
         >> setting.saveOnClose
         >> setting.textCol
         >> setting.statusBarCol
-        >> setting.backgroundCol;
+        >> setting.backgroundCol
+        >> setting.directory;
     }
 
     

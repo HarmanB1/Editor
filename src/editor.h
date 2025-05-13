@@ -12,6 +12,7 @@ struct EditorSetting{
     int textCol = COLOR_WHITE;
     int statusBarCol = COLOR_GREEN;
     int backgroundCol = COLOR_BLACK;
+    std::string directory="";
 };
 
 class Editor{
