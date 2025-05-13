@@ -288,12 +288,14 @@ void Editor::direct(std::string& directory){
     int row, col;
     getmaxyx(stdscr, row, col);
     mvhline(0, 0, ' ', col);
-    mvprintw(0, 0, "ESC: Cancel | Type in directory such as /Users/JamesSmith/downloads/ (it must be in this form), to save, use save settings in settings");
+    mvprintw(0, 0, "ESC: Cancel | Type in directory ex: /Users/JamesSmith/downloads/ , to save, use save settings in settings");
     mvprintw(1, 0, "Directory: ");
     
     curs_set(1);
     char directoryUser[256];
     memset(directoryUser, 0, sizeof(directoryUser));
+    strncpy(directoryUser, setting.directory.c_str(), sizeof(directoryUser)-1);//throw current directory into char string
+
     move(1, 10);
 
     int ch;
@@ -331,12 +333,23 @@ void Editor::direct(std::string& directory){
             
         }
     }
+    //ensure it ends with /
+    size_t len = strlen(directoryUser);
+    if(len>0 && directoryUser[len-1]!= '/'){
+        if(len<sizeof(directoryUser)-1){
+            directoryUser[len] = '/';
+            directoryUser[len+1] = '\0';
+        }
+    }
+
+
     noecho();
     curs_set(1);
     directory = directoryUser;
     setting.directory = directory;
     
-    mvprintw(1, 0, "Directory saved, Press any key to return.");
+    mvprintw(1, 0, "Directory saved %s", directory.c_str());
+    mvprintw(3, 0, "to save directory for next time, please save in settings, to return press any key");
     move(0,0);
     refresh();
     getch();
