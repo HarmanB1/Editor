@@ -292,16 +292,20 @@ void Editor::direct(std::string& directory){
     mvprintw(1, 0, "Directory: ");
     
     curs_set(1);
+
+    //initialiaze with previous directory saved
     char directoryUser[256];
     memset(directoryUser, 0, sizeof(directoryUser));
     strncpy(directoryUser, setting.directory.c_str(), sizeof(directoryUser)-1);//throw current directory into char string
 
     move(1, 10);
+    printw("%s", setting.directory.c_str());
 
     int ch;
-    int i = 0; //x position
+    int i = strlen(directoryUser);//x position
     noecho();
-    printw("%s", setting.directory.c_str());
+
+    
     while (i < 255 && (ch = getch()) != '\n') {
         
         if (ch == 27) { // ESC
