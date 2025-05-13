@@ -37,8 +37,7 @@ Editor::Editor(): cursorX(0), cursorY(0), scrollY(0) {
 
     //colours
     applyCol();
-    attron(COLOR_PAIR(1));
-
+   
 
     raw();
     echo();
@@ -76,7 +75,7 @@ std::string Editor::getConfigPath(){
 void Editor::applyCol(){
     start_color();
     use_default_colors();
-    init_pair(1, setting.textCol, setting.backgroundCol);
+    //init_pair(1, COLOR_WHITE, COLOR_BLACK);
     init_pair(2, setting.textCol, setting.statusBarCol);
 
 
@@ -104,10 +103,10 @@ void Editor::run(){
         
         updateStatus();
 
-        bkgd(COLOR_PAIR(1));
+  
 
         //printing
-        
+      //  attron(COLOR_PAIR(1));
         for (int i = 0; i < visRows; i++) {
             int lineIdx = scrollY + i;
             if (lineIdx >= content.size()) break;
@@ -117,6 +116,7 @@ void Editor::run(){
             
             
         }
+     //   attroff(COLOR_PAIR(1));
        
         
 
@@ -132,6 +132,7 @@ void Editor::updateStatus(){
     getmaxyx(stdscr, row, col);
 
     attron(COLOR_PAIR(2));
+    
     mvhline(row-1, 0, ' ', col); // Draw empty line with color
 
     std::string nameDisplay = filepath.empty() ? "No file entered" : filepath;
@@ -291,19 +292,19 @@ void Editor::settings(){
         mvwprintw(settingWIN, 6, 4, "%s Ask for Save on close %s", selected == 3 ? ">" : " ", setting.saveOnClose? "ON" : "OFF");
         mvwprintw(settingWIN, 7, 4, "%s TextColour %s", selected == 4 ? ">" : " ", colArrString.at(textcol_index).c_str());
         mvwprintw(settingWIN, 8, 4, "%s Statusbar colour %s", selected == 5 ? ">" : " ", colArrString.at(statusBarCol_index).c_str());
-        mvwprintw(settingWIN, 9, 4, "%s background colour %s", selected == 6 ? ">" : " ", colArrString.at(backgroundCol_index).c_str());
-        mvwprintw(settingWIN, 10, 4, "%s Save Settings", selected == 7 ? ">" : " ");
-        mvwprintw(settingWIN, 11, 4, "%s Exit Settings", selected == 8 ? ">" : " ");
+       
+        mvwprintw(settingWIN, 10, 4, "%s Save Settings", selected == 6 ? ">" : " ");
+        mvwprintw(settingWIN, 11, 4, "%s Exit Settings", selected == 7 ? ">" : " ");
 
         wrefresh(settingWIN);
 
         int ch = wgetch(settingWIN);
         switch(ch){
             case KEY_UP:
-                selected = selected > 0 ? selected -1:8;
+                selected = selected > 0 ? selected -1:7;
                 break;
             case KEY_DOWN:
-                selected = selected < 8 ? selected+1: 0;
+                selected = selected < 7 ? selected+1: 0;
                 break;
 
             case KEY_LEFT:
@@ -333,8 +334,8 @@ void Editor::settings(){
 
             case 10: //ascii for enter
                 switch(selected){
-                    case 7: saveSetting(); break;
-                    case 8: inSetting = false; break;
+                    case 6: saveSetting(); break;
+                    case 7: inSetting = false; break;
 
                 }
                 break;
@@ -348,7 +349,6 @@ void Editor::settings(){
     }
 
   
-
 
 
     //restore window and delte
