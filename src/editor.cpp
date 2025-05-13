@@ -344,6 +344,7 @@ void Editor::direct(std::string& directory){
 
         
 void Editor::settings(){
+    curs_set(0);  
     int row, col;
     getmaxyx(stdscr, row, col);
 
@@ -372,7 +373,7 @@ void Editor::settings(){
         
         mvwprintw(settingWIN, 3, 4, "%s Autosave: %s", selected == 0 ? ">" : " ", setting.autosave ? "ON" : "OFF");
         mvwprintw(settingWIN, 4, 4, "%s Display Line Number: %s", selected == 1 ? ">" : " ", setting.lineNumb ? "ON" : "OFF");
-        mvwprintw(settingWIN, 5, 4, "%s Word Wrap: %d", selected == 2 ? ">" : " ", setting.wordWrap ? "ON q" : "OFF");
+        mvwprintw(settingWIN, 5, 4, "%s Word Wrap: %d", selected == 2 ? ">" : " ", setting.wordWrap ? "ON" : "OFF");
         mvwprintw(settingWIN, 6, 4, "%s Ask for Save on close %s", selected == 3 ? ">" : " ", setting.saveOnClose? "ON" : "OFF");
         mvwprintw(settingWIN, 7, 4, "%s TextColour %s", selected == 4 ? ">" : " ", colArrString.at(textcol_index).c_str());
         mvwprintw(settingWIN, 8, 4, "%s Statusbar colour %s", selected == 5 ? ">" : " ", colArrString.at(statusBarCol_index).c_str());
@@ -419,7 +420,7 @@ void Editor::settings(){
             case 10: //ascii for enter
                 switch(selected){
                     case 6: saveSetting(); break;
-                    case 7: inSetting = false; break;
+                    case 7: inSetting = false; curs_set(1);   break;
 
                 }
                 break;
