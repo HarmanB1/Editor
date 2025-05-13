@@ -158,7 +158,11 @@ void Editor::updateStatus(){
 
 void Editor::save(std::string filepath,std::vector<std::string>& content, std::vector<std::string>& content_backup) {
     
-    std::string userPath(filepath);
+    
+    std::filesystem::path directory_path = directory;
+    std::filesystem::path userPath = directory_path / filepath;
+    userPath = userPath.lexically_normal().string();
+
 
     if (userPath.empty()) {
         clear();
@@ -187,7 +191,7 @@ void Editor::load(std::string& filepath,std::vector<std::string>& content, std::
     int row, col;
     getmaxyx(stdscr, row, col);
     mvhline(0, 0, ' ', col);
-    mvprintw(0, 0, "ESC: Cancel | Type in path to load file:");
+    mvprintw(0, 0, "ESC: Cancel | Type in file name such as: t1.txt (set directory beforehand from main menu using ^d, )");
     mvprintw(1, 0, "filename: ");
     
     curs_set(1);
@@ -232,8 +236,15 @@ void Editor::load(std::string& filepath,std::vector<std::string>& content, std::
     }
     noecho();
     curs_set(1);
+   // std::string pathInputCopy = pathInput;
+   // std::string pathInput = "/"+ pathInputCopy;
     filepath = pathInput;
-    std::string userPath(pathInput);
+
+    std::filesystem::path directory_path = directory;
+    std::filesystem::path userPath = directory_path / pathInput;
+    userPath = userPath.lexically_normal().string();
+
+    
 
     if (userPath.empty()) {
         mvprintw(0, 0, "No file name entered. Press any key to return.");
@@ -276,7 +287,7 @@ void Editor::direct(std::string& directory){
     int row, col;
     getmaxyx(stdscr, row, col);
     mvhline(0, 0, ' ', col);
-    mvprintw(0, 0, "ESC: Cancel | Type in directory such as /Users/JamesSmith/downloads");
+    mvprintw(0, 0, "ESC: Cancel | Type in directory such as /Users/JamesSmith/downloads/ (it must be in this form)");
     mvprintw(1, 0, "Directory: ");
     
     curs_set(1);
@@ -287,7 +298,7 @@ void Editor::direct(std::string& directory){
     int ch;
     int i = 0; //x position
     noecho();
-    printw("%s", setting.directory);
+    printw("%s", setting.directory.c_str());
     while (i < 255 && (ch = getch()) != '\n') {
         
         if (ch == 27) { // ESC
