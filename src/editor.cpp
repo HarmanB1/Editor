@@ -1,9 +1,7 @@
-//add settings
-//settings txt
-//add opton to clear
-//add settings colours
+
+
 //undo redo
-//save status
+
 //file diffing
 //copy pasting cliboard
 //bookmarks
@@ -533,9 +531,11 @@ void Editor::doMouse(){
 
 
 
+
 void Editor::doInput(int ch){
     switch(ch){
-        case 4: //for ctril d
+       
+        case 4: //for ctrl d
             direct(directory);
             break;
         case 18: //for ctrl r
@@ -652,6 +652,7 @@ void Editor::doInput(int ch){
             
             if(filepath != ""){
                 clear();
+                
                 mvprintw(0,0, "Save Y/N : ");
                 refresh();
                 bool done = true;

@@ -28,6 +28,7 @@ class Editor{
         void save(std::string filepath, std::vector<std::string>& content, std::vector<std::string>& content_backup);
         void load(std::string& filepath, std::vector<std::string>& content, std::vector<std::string>& content_backup);
         void direct(std::string& directory);
+       
 
         
         void settings();
