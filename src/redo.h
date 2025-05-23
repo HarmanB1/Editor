@@ -45,7 +45,7 @@ class Clipboard{
         void Cut(State& state);
         void copy(const State& state);
         void paste(State& state);
-        bool hasContent() const;
+        //bool hasContent() const;
         
     private:
         std::vector<std::string> clipboard;

@@ -46,3 +46,20 @@ void Clipboard::Cut(State& state){
     clipboard.push_back(state.content[state.cursorY]);
     state.content[state.cursorY].erase(state.cursorX);
 }
+
+void Clipboard::copy(const State& state){
+    if(state.cursorY >= state.content.size()) return;
+    if(state.cursorX >= state.content[state.cursorY].size()) return;
+
+    clipboard.clear();
+    clipboard.push_back(state.content[state.cursorY]);
+}
+
+void Clipboard::paste(State& state){
+    if(clipboard.empty()) return;
+    if(state.cursorY >= state.content.size()) return;
+
+    state.content[state.cursorY].insert(state.cursorX, clipboard[0]);
+    state.cursorX += clipboard[0].size();
+
+}
