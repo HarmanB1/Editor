@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <ncurses.h>
+#include <redo.h>
 
 struct EditorSetting{
     bool autosave= true;
@@ -22,28 +23,28 @@ class Editor{
         void run();
 
     private:
+        //main functions
         void doInput(int ch);
         void getInput();
         void doMouse();
         void save(std::string filepath, std::vector<std::string>& content, std::vector<std::string>& content_backup);
         void load(std::string& filepath, std::vector<std::string>& content, std::vector<std::string>& content_backup);
         void direct(std::string& directory);
-       // void current(std::string filepath);
+    
        
 
-        
+        //settings functions 
         void settings();
         void applyCol();
         void updateStatus();
-       // void refresh();
-        
-        
+ 
+       //settings related to editor settings struct
         EditorSetting setting;
-       // void showSettings();
         void saveSetting();
         void loadSetting();
         std::string getConfigPath();
-        
+
+        //variables for settings
         std::vector<int> colArr = {COLOR_BLACK,COLOR_RED,COLOR_GREEN,COLOR_YELLOW, COLOR_BLUE, COLOR_MAGENTA,COLOR_CYAN, COLOR_WHITE};
         std::vector<std::string> colArrString = {"Black", "Red", "Green", "Yellow", "Blue", "Magenta", "Cyan", "White"};
         int textcol_index=7;
@@ -51,15 +52,25 @@ class Editor{
         int backgroundCol_index=0;
 
        
-
-
+        //members of editor class
         std::vector<std::string> content; //content of each line index representing y 
         std::vector<std::string> backup_content;
-        int cursorX, cursorY;
+        size_t cursorX, cursorY;
         bool running; //indicator to stop running program
         std::string filepath;
         std::string directory;
         int scrollY; //tracks scroll pos
+
+        //history and clipboard
+        History history;
+        Clipboard history;
+
+        //state management
+        State getCurrentState() const;
+        void applyState(const State& state);
+        
+
+
         
 
 

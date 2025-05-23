@@ -526,15 +526,7 @@ void Editor::doMouse(){
    
 }
 
-/*
 
-void current(std::string filepath){
-    std::filesystem::path directory_path = directory;
-    std::filesystem::path userPath = directory_path / filepath;
-    userPath = userPath.lexically_normal().string();
-    
-}
-*/
 void Editor::doInput(int ch){
     switch(ch){
        
