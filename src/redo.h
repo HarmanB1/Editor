@@ -28,8 +28,8 @@ class History{
         bool undo(State& state);
         bool redo(State& state);
         void clearRedo();
-        bool UndoOk() const;
-        bool RedoOk() const;
+        //bool UndoOk() const;
+        //bool RedoOk() const;
 
     private:
         std::vector<State> undoStack;
@@ -42,7 +42,7 @@ class History{
 
 class Clipboard{
     public:
-        void cut(State* state);
+        void Cut(State& state);
         void copy(const State& state);
         void paste(State& state);
         bool hasContent() const;

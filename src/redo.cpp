@@ -34,3 +34,15 @@ void History::clearRedo(){
     redoStack.clear();
 
 }
+
+//clipboard functions
+
+void Clipboard::Cut(State& state){
+    //size checks
+    if(state.cursorY >= state.content.size()) return;
+    if(state.cursorX >= state.content[state.cursorY].size()) return;
+
+    clipboard.clear();
+    clipboard.push_back(state.content[state.cursorY]);
+    state.content[state.cursorY].erase(state.cursorX);
+}
