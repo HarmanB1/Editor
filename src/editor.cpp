@@ -105,7 +105,7 @@ void Editor::run(){
         
         applyCol();
         
-        updateStatus();
+       
 
   
 
@@ -120,10 +120,8 @@ void Editor::run(){
             
             
         }
-     //   attroff(COLOR_PAIR(1));
-       
-        
-
+        updateStatus();
+    
         int screenCursorY = cursorY - scrollY;
         move(screenCursorY, cursorX);
         refresh();
