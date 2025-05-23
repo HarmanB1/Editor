@@ -666,6 +666,7 @@ void Editor::doInput(int ch){
         case 10:
         //asci for enter
         {
+            editHistory.pushState(getCurrentState());
             //take part of line at cursorx
             std::string newLine = content[cursorY].substr(cursorX);
             content[cursorY]= content[cursorY].substr(0, cursorX);//put new content at line back at same spot
@@ -676,6 +677,7 @@ void Editor::doInput(int ch){
 
         }
         case 127:
+            editHistory.pushState(getCurrentState());
             
                 if(cursorX>0){
                     //normal deletion
@@ -696,6 +698,7 @@ void Editor::doInput(int ch){
             
 
         case ' ':
+        editHistory.pushState(getCurrentState());
         //adding space
             content[cursorY].insert(cursorX, 1, ' ');
             cursorX++;
@@ -737,6 +740,7 @@ void Editor::doInput(int ch){
             break;
         default:
             if(isprint(ch)){
+                editHistory.pushState(getCurrentState());
                 content[cursorY].insert(cursorX, 1, ch);
              
                 cursorX++;
