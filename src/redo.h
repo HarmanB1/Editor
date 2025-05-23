@@ -42,7 +42,7 @@ class History{
 
 class Clipboard{
     public:
-        void Cut(State& state);
+        void cut(State& state);
         void copy(const State& state);
         void paste(State& state);
         //bool hasContent() const;

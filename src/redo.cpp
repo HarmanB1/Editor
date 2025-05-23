@@ -37,7 +37,7 @@ void History::clearRedo(){
 
 //clipboard functions
 
-void Clipboard::Cut(State& state){
+void Clipboard::cut(State& state){
     //size checks
     if(state.cursorY >= state.content.size()) return;
     if(state.cursorX >= state.content[state.cursorY].size()) return;
