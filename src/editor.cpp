@@ -9,11 +9,8 @@
 //cut text k
 //refresh text from pull og 
 
-//must fix saving of thing and of(test with files before )
-//settings
-//themes
 
-//hav eto fix colour setting
+
 //have to fix print to terminal
 #include "fileIO.h"
 #include "editor.h"
@@ -529,9 +526,15 @@ void Editor::doMouse(){
    
 }
 
+/*
 
-
-
+void current(std::string filepath){
+    std::filesystem::path directory_path = directory;
+    std::filesystem::path userPath = directory_path / filepath;
+    userPath = userPath.lexically_normal().string();
+    
+}
+*/
 void Editor::doInput(int ch){
     switch(ch){
        
@@ -539,7 +542,7 @@ void Editor::doInput(int ch){
             direct(directory);
             break;
         case 18: //for ctrl r
-            refresh();
+            
         case 12: //for ctrl l
             backup_content= content;
             content.clear();

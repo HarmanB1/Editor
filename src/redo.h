@@ -1,15 +1,18 @@
-class Redo{
-    public:
-        Redo();
-        ~Redo();
-        void undo();
-        void redo();
-
-        void cut();
-        void copy();
-        void paste();
-        void retreive();
+#pragma once
+#include <vector>
+#include <string>
+class History{
 
 
+};
 
+
+class Clipboard{
+    pubilc:
+        void cut
+        void copy
+        void paste
+        
+    private:
+        std::vector<std::string> clipboard;
 };
