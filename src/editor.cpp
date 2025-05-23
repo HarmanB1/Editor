@@ -93,7 +93,7 @@ void Editor::run(){
         
         int row, col;
         getmaxyx(stdscr, row, col);
-        int visRows = row-1;
+        int visRows = row-2;
 
         if (cursorY < scrollY) {
             scrollY = cursorY;
