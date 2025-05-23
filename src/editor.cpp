@@ -135,24 +135,34 @@ void Editor::updateStatus(){
     int row, col;
     getmaxyx(stdscr, row, col);
 
+    int visRows = row-2;
+
     attron(COLOR_PAIR(2));
     
-    mvhline(row-1, 0, ' ', col); // Draw empty line with color
+    mvhline(visRows, 0, ' ', col); // Draw empty line with color
+    mvhline(visRows+1, 0, ' ', col); // Draw empty line with color
 
     std::string nameDisplay = filepath.empty() ? "No file entered" : filepath;
     std::string posInfo = "Ln " + std::to_string(cursorY+1)+ ", Col" + std::to_string(cursorX +1);
-    std::string bar = " ESC: Quit | ^S: Save | ^L: Load| ^F: New | ^U: Settings Menu | " + nameDisplay + " | " + setting.directory + " | " + posInfo;
+    std::string topLine = " ESC: Quit | ^S: Save | ^L: Load| ^F: New | ^U: Settings Menu | " + nameDisplay + " | " + setting.directory + " | " + posInfo;
+    std::string bottomLine = " ^Z: Undo | ^Y: Redo | ^X: cutline | ^C: copyline | ^V: pastline | ^D: setDirectory | To save directory/file name for next session please save in settings";
 
-    if(bar.length()>static_cast<size_t>(col)){
-        bar = bar.substr(0, col-3)+ "...";
+    if(topLine.length()>static_cast<size_t>(col)){
+        topLine = topLine.substr(0, col-3)+ "...";
+        bottomLine = bottomLine.substr(0, col-3)+ "...";
     }
-    mvprintw(row-1, 0, bar.c_str());
+   
+    
+
+    mvprintw(visRows, 0, topLine.c_str());
+    mvprintw(visRows+1, 0, bottomLine.c_str());
     attroff(COLOR_PAIR(2));
 
 }
 
 
 void Editor::save(std::string filepath,std::vector<std::string>& content, std::vector<std::string>& content_backup) {
+    editHistory.pushState(getCurrentState());
     
     
     std::filesystem::path directory_path = directory;
@@ -181,6 +191,7 @@ void Editor::save(std::string filepath,std::vector<std::string>& content, std::v
 }
 
 void Editor::load(std::string& filepath,std::vector<std::string>& content, std::vector<std::string>& content_backup) {
+    editHistory.pushState(getCurrentState());
         
     clear();
     attron(COLOR_PAIR(2));
@@ -278,6 +289,7 @@ void Editor::load(std::string& filepath,std::vector<std::string>& content, std::
 }
 
 void Editor::direct(std::string& directory){
+    editHistory.pushState(getCurrentState());
     clear();
     attron(COLOR_PAIR(2));
     int row, col;
@@ -579,7 +591,7 @@ void Editor::doInput(int ch){
         case 4: //for ctrl d direcotry
             direct(directory);
             break;
-        case 18: //for ctrl r
+        //case 18: //for ctrl r
             
         case 12: //for ctrl l loading
             backup_content= content;

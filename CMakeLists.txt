@@ -14,6 +14,7 @@ add_executable(editor
     src/main.cpp 
     src/editor.cpp
     src/fileIO.cpp
+    src/redo.cpp
 )
 
 target_link_libraries(editor ${CURSES_LIBRARIES} )

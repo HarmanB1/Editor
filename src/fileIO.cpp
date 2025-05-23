@@ -9,6 +9,7 @@ bool fileIO::file_create(const std::string& filepath){
     }
 
     file_new.close();
+    return true;
 
     //open again redundant test
 
