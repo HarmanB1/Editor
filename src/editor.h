@@ -62,8 +62,8 @@ class Editor{
         int scrollY; //tracks scroll pos
 
         //history and clipboard
-        History history;
-        Clipboard history;
+        History editHistory;
+        Clipboard editClipboard;
 
         //state management
         State getCurrentState() const;

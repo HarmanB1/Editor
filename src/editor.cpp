@@ -529,13 +529,59 @@ void Editor::doMouse(){
 
 void Editor::doInput(int ch){
     switch(ch){
-       
-        case 4: //for ctrl d
+        case 26: //for ctrl z for going undo
+        {
+            State currentState = getCurrentState();
+            if(editHistory.undo(currentState)){
+                applyState(currentState);
+            }
+                
+            break;
+
+        }
+            
+        case 25: //ctrl Y for redo
+        {
+            State currentState = getCurrentState();
+            if(editHistory.redo(currentState)){
+                applyState(currentState);
+            }
+                
+            break;
+
+        }
+
+        case 24: //ctrl x for cut
+        {
+            editHistory.pushState(getCurrentState());
+            State currentState = getCurrentState();
+            editClipboard.cut(currentState);
+            applyState(currentState);
+            break;
+
+        }
+        
+        case 3:{ //  ctrl c for copy
+            editClipboard.copy(getCurrentState());
+            break;
+        }
+
+        case 22://ctrl v
+        {
+            editHistory.pushState(getCurrentState());
+            State currentState = getCurrentState();
+            editClipboard.paste(currentState);
+            applyState(currentState);
+            break;
+        }
+            
+
+        case 4: //for ctrl d direcotry
             direct(directory);
             break;
         case 18: //for ctrl r
             
-        case 12: //for ctrl l
+        case 12: //for ctrl l loading
             backup_content= content;
             content.clear();
             load(filepath, content, backup_content);
@@ -543,13 +589,13 @@ void Editor::doInput(int ch){
 
             break;
 
-        case 19: //for ctrl s
+        case 19: //for ctrl s saving
             //backup_content=content;
             save(filepath, content, backup_content);
             break;
 
 
-        case 6: //for ctrl f
+        case 6: //for ctrl f filepath
             filepath = "";
             
             clear();
@@ -557,7 +603,7 @@ void Editor::doInput(int ch){
             break;
             
 
-        case 21: //for ctrl u
+        case 21: //for ctrl u settings
             settings();
 
 
