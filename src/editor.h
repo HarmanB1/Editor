@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 #include <ncurses.h>
-#include <redo.h>
+#include "redo.h"
 
 struct EditorSetting{
     bool autosave= true;

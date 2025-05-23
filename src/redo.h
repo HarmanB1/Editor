@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <cstddef>
 struct State{
     std::vector<std::string> content;
     size_t cursorX;

@@ -690,4 +690,16 @@ void Editor::doInput(int ch){
 }
 
 
+State Editor::getCurrentState() const{
+    return State(content, cursorX, cursorY, filepath, setting.directory);
+}
 
+void Editor::applyState(const State& state){
+    content = state.content;
+    cursorX = state.cursorX;
+    cursorY = state.cursorY;
+    filepath = state.filepath;
+    setting.directory = state.directory;
+
+  
+}
