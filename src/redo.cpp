@@ -20,3 +20,11 @@ bool History::undo(State& state){
     return true;
 
 }
+
+bool History::redo(State& state){
+    if(redoStack.empty()) return false;
+    undoStack.push_back(state);
+    state = redoStack.back();
+    redoStack.pop_back();
+    return true;
+}
