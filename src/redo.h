@@ -27,7 +27,7 @@ class History{
         void pushState(const State& state);
         bool undo(State& state);
         bool redo(State& state);
-        bool clearRedo();
+        void clearRedo();
         bool UndoOk() const;
         bool RedoOk() const;
 

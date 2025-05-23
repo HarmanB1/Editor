@@ -4,7 +4,7 @@
 
 void History::pushState(const State& state){
     if(undoStack.size()>= MAX_HISTORY){
-        undoStack.erase(undoStack.begin());
+        undoStack.erase(undoStack.begin(),undoStack.begin()+undoStack.size()/2);
     }
     undoStack.push_back(state);
     redoStack.clear();
@@ -27,4 +27,10 @@ bool History::redo(State& state){
     state = redoStack.back();
     redoStack.pop_back();
     return true;
+}
+
+void History::clearRedo(){
+    undoStack.clear();
+    redoStack.clear();
+
 }
