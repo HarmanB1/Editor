@@ -105,7 +105,7 @@ void Editor::run(){
         
         applyCol();
         
-       
+        updateStatus();
 
   
 
@@ -120,7 +120,7 @@ void Editor::run(){
             
             
         }
-        updateStatus();
+        
     
         int screenCursorY = cursorY - scrollY;
         move(screenCursorY, cursorX);
