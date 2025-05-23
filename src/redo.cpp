@@ -39,12 +39,13 @@ void History::clearRedo(){
 
 void Clipboard::cut(State& state){
     //size checks
-    if(state.cursorY >= state.content.size()) return;
-    if(state.cursorX >= state.content[state.cursorY].size()) return;
+   if(state.cursorY >= state.content.size()) return;
+   
 
     clipboard.clear();
     clipboard.push_back(state.content[state.cursorY]);
-    state.content[state.cursorY].erase(state.cursorX);
+    state.content[state.cursorY] = "";
+    state.cursorX = 0;
 }
 
 void Clipboard::copy(const State& state){
