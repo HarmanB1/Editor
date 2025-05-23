@@ -27,6 +27,9 @@ class History{
         void pushState(const State& state);
         bool undo(State& state);
         bool redo(State& state);
+        bool clearRedo();
+        bool UndoOk() const;
+        bool RedoOk() const;
 
     private:
         std::vector<State> undoStack;
@@ -34,18 +37,15 @@ class History{
         const int MAX_HISTORY = 100;
 
 
-
-
-
-
 };
 
 
 class Clipboard{
-    pubilc:
-        void cut
-        void copy
-        void paste
+    public:
+        void cut(State* state);
+        void copy(const State& state);
+        void paste(State& state);
+        bool hasContent() const;
         
     private:
         std::vector<std::string> clipboard;
