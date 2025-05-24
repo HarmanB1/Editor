@@ -3,7 +3,8 @@
 //fix ffff print
 //fix 2nd line 
 //fix col
-
+//fix eror
+//docs
 
 
 //have to fix print to terminal
