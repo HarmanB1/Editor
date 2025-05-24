@@ -1,13 +1,8 @@
 
 
-//undo redo
-
-//file diffing
-//copy pasting cliboard
-//bookmarks
-//cursor pos
-//cut text k
-//refresh text from pull og 
+//fix ffff print
+//fix 2nd line 
+//fix col
 
 
 
@@ -762,4 +757,19 @@ void Editor::applyState(const State& state){
     setting.directory = state.directory;
 
   
+}
+
+void Editor::autoSave(){
+    if(!setting.autosave) return;
+
+    auto now = std::chrono::system_clock::now();
+    auto diff = std::chrono::duration_cast<std::chrono::seconds>(now-lastSaveTime).count();
+
+    if(diff >= autoSaveInterval){
+        if(!filepath.empty()){
+            save(filepath, content, backup_content);
+            lastSaveTime = now;
+        }
+    }
+
 }

@@ -4,6 +4,7 @@
 #include <string>
 #include <ncurses.h>
 #include "redo.h"
+#include <chrono>
 
 struct EditorSetting{
     bool autosave= true;
@@ -31,7 +32,13 @@ class Editor{
         void load(std::string& filepath, std::vector<std::string>& content, std::vector<std::string>& content_backup);
         void direct(std::string& directory);
     
-       
+       void autoSave();
+       void lineNumb();
+       void wordWrap();
+       void saveOnClose();
+
+
+
 
         //settings functions 
         void settings();
@@ -68,6 +75,10 @@ class Editor{
         //state management
         State getCurrentState() const;
         void applyState(const State& state);
+
+        //time managment
+        std::chrono::system_clock::time_point lastSaveTime;
+        int autoSaveInterval;
         
 
 
