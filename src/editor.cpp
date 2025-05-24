@@ -116,6 +116,9 @@ void Editor::run(){
 
         //printing
       //  attron(COLOR_PAIR(1));
+      if(setting.lineNumb){
+        lineNumb();
+      }else{
         for (int i = 0; i < visRows; i++) {
             int lineIdx = scrollY + i;
             if (lineIdx >= content.size()) break;
@@ -125,6 +128,11 @@ void Editor::run(){
             
             
         }
+
+      }
+        
+
+       
         
     
         int screenCursorY = cursorY - scrollY;
