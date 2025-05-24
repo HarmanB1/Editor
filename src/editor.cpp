@@ -807,3 +807,56 @@ void Editor::lineNumb(){
 
     move(saveY, saveX);
 }
+
+void Editor::wordWrap(){
+    if (!setting.wordWrap) return;
+
+    int row, col;
+    getmaxyx(stdscr, row, col);
+    const int maxLineWidth = col - (setting.lineNumb ? 5 : 0); // Account for line numbers
+
+    std::vector<std::string> newContent;
+    
+    for (const auto& line : content) {
+        if (line.length() <= static_cast<size_t>(maxLineWidth)) {
+            newContent.push_back(line); 
+            continue;
+        }
+
+        // Wrap the line
+        size_t pos = 0;
+        while (pos < line.length()) {
+            
+            size_t end = pos + maxLineWidth;
+            if (end > line.length()) end = line.length();
+            
+            size_t spacePos = line.rfind(' ', end);
+            if (spacePos != std::string::npos && spacePos > pos) {
+                end = spacePos + 1; // Include the space
+            }
+
+            newContent.push_back(line.substr(pos, end - pos));
+            pos = end;
+
+            // Trim leading whitespace on next line (except first split)
+            while (pos < line.length() && line[pos] == ' ') {
+                pos++;
+            }
+        }
+    }
+
+    // Update content with wrapped lines
+    if (!newContent.empty()) {
+        editHistory.pushState(getCurrentState()); 
+        content = newContent;
+        
+        // Adjust cursor position
+        if (cursorY >= content.size()) {
+            cursorY = content.size() - 1;
+        }
+        if (cursorX >= content[cursorY].size()) {
+            cursorX = content[cursorY].size();
+        }
+    }
+
+}
