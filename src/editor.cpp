@@ -727,31 +727,7 @@ void Editor::doInput(int ch){
         case 27:
         //acsi for escape
             
-            if(filepath != ""){
-                clear();
-                
-                mvprintw(0,0, "Save Y/N : ");
-                refresh();
-                bool done = true;
-                while(done){
-                    int ch = getch();
-                    if(ch == 89 || ch == 121){
-                        save(filepath, content, backup_content);
-                        break;
-
-                    }else if(ch == 78 || ch == 110 ){
-                        break;
-
-                    }else{
-                        clear();
-                        mvprintw(0,0, "error user did not answer y or n");
-                        mvprintw(1,0, "Save Y/N : ");
-                        refresh();
-                    }
-
-                }
-
-            }
+           saveOnClose();
             clear();
             
             mvprintw(0, 0, "ENDING PROGRAM");
