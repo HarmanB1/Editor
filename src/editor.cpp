@@ -184,6 +184,11 @@ void Editor::save(std::string filepath,std::vector<std::string>& content, std::v
 }
 
 void Editor::load(std::string& filepath,std::vector<std::string>& content, std::vector<std::string>& content_backup) {
+    if (directory.empty()) {
+        mvprintw(0, 0, "Error: No directory set. Press Ctrl+D from main menu to set it.");
+        getch();
+        return;
+    }
     editHistory.pushState(getCurrentState());
         
     clear();
