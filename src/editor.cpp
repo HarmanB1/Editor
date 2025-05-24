@@ -131,6 +131,8 @@ void Editor::run(){
         move(screenCursorY, cursorX);
         refresh();
         getInput();
+
+        wordWrap();
     }
 }
 
@@ -763,6 +765,8 @@ void Editor::doInput(int ch){
                 content[cursorY].insert(cursorX, 1, ch);
              
                 cursorX++;
+
+                wordWrap();
             }
 
             break;
