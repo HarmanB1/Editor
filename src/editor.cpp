@@ -136,7 +136,15 @@ void Editor::run(){
         
     
         int screenCursorY = cursorY - scrollY;
-        move(screenCursorY, cursorX);
+
+        int screenCursorX = cursorX;
+        if(setting.lineNumb){
+            screenCursorX +=5;
+        }
+
+        
+        
+        move(screenCursorY, screenCursorX);
         refresh();
         getInput();
 
@@ -554,6 +562,12 @@ void Editor::doMouse(){
             cursorY = event.y;
             cursorX = event.x;
 
+            if(setting.lineNumb && cursorX >= 5){
+                cursorX -=5;
+            }else if(setting.lineNumb){
+                cursorX =0;
+            }
+
             //bound checking
             if(cursorY >= content.size()){
                 cursorY = content.size()-1;
@@ -812,7 +826,9 @@ void Editor::lineNumb(){
         }
     }
 
-    move(saveY, saveX);
+
+
+    move(saveY, saveX+5);
 }
 
 void Editor::wordWrap(){
