@@ -28,6 +28,11 @@ Editor::Editor(): cursorX(0), cursorY(0), scrollY(0) {
     //colours
     applyCol();
    
+    lastSaveTime = std::chrono::system_clock::now();
+    
+    
+    // Default settings
+    autoSaveInterval = 30;
 
     raw();
     echo();
@@ -82,8 +87,13 @@ void Editor::applyCol(){
 
 
 void Editor::run(){
-    
+    auto lastCheck = std::chrono::system_clock::now();
     while(running){
+        auto now = std::chrono::system_clock::now();
+        if (std::chrono::duration_cast<std::chrono::seconds>(now - lastCheck).count() >= 1) {
+            autoSave();
+            lastCheck = now;
+        }
         erase();
         
         int row, col;
@@ -138,7 +148,16 @@ void Editor::updateStatus(){
     std::string nameDisplay = filepath.empty() ? "No file entered" : filepath;
     std::string posInfo = "Ln " + std::to_string(cursorY+1)+ ", Col" + std::to_string(cursorX +1);
     std::string topLine = " ESC: Quit | ^S: Save | ^L: Load| ^F: New | ^U: Settings Menu | " + nameDisplay + " | " + setting.directory + " | " + posInfo;
-    std::string bottomLine = " ^Z: Undo | ^Y: Redo | ^X: cutline | ^C: copyline | ^V: pastline | ^D: setDirectory | To save directory/file name for next session please save in settings";
+
+    //formating for time
+    auto now = std::chrono::system_clock::now();
+    std::time_t saveTime = std::chrono::system_clock::to_time_t(lastSaveTime);
+    std::tm tm = *std::localtime(&saveTime);
+    char timeStr[20];
+    std::strftime(timeStr, sizeof(timeStr), "%H: %M :%S", &tm);
+    std::string saveTiming = "Last Saved: " + std::string(timeStr);
+
+    std::string bottomLine = " ^Z: Undo | ^Y: Redo | ^X: cutline | ^C: copyline | ^V: pastline | ^D: setDirectory | "+ saveTiming+" save directory name for next session please save in settings";
 
     if(topLine.length()>static_cast<size_t>(col)){
         topLine = topLine.substr(0, col-3)+ "...";
