@@ -495,6 +495,8 @@ void Editor::loadSetting(){
         >> setting.statusBarCol
         >> setting.backgroundCol
         >> setting.directory;
+
+        directory = setting.directory;
     }
 
     
@@ -777,4 +779,31 @@ void Editor::autoSave(){
         }
     }
 
+}
+
+void Editor::lineNumb(){
+    if(!setting.lineNumb) return;
+
+    int row, col;
+    getmaxyx(stdscr, row, col);
+    int visRows = row-2;
+
+    //save cursor pos
+    int saveY, saveX;
+    getyx(stdscr, saveY, saveX);
+
+    for(int i=0; i < visRows; i++){
+        int lineIdx = scrollY +i;
+        if(lineIdx < content.size()){
+            move(i, 0);
+            attron(A_REVERSE);
+            printw("%4d ", lineIdx +1);
+            attroff(A_REVERSE);
+            move(i, 5);
+            printw("%s", content[lineIdx].c_str());
+
+        }
+    }
+
+    move(saveY, saveX);
 }
