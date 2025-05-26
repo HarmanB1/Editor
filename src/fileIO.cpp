@@ -1,3 +1,13 @@
+/**
+ * @class fileIO
+ * @brief Core filehandling implementation
+ *
+ * Handles all editor functionality including:
+ * -loading files
+ * -saving files
+ * -creating new files
+ * -verifying file location
+ */
 #include "fileIO.h"
 
 #include <sys/stat.h>

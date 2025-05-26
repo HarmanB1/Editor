@@ -1,3 +1,14 @@
+/**
+ * @class Editor
+ * @brief Core text editor implementation
+ *
+ * Handles all editor functionality including:
+ * - Keyboard/mouse input
+ * - Screen rendering
+ * - File I/O operations
+ * - Undo/redo functionality
+ * - Configuration management
+ */
 
 #include "fileIO.h"
 #include "editor.h"

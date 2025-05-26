@@ -17,6 +17,14 @@
 #include "redo.h"
 #include <chrono>
 
+
+/**
+ * @struct EditorSettings
+ * @brief Stores all user-configurable editor settings
+ * 
+ * Persisted to disk and loaded on startup
+ */
+
 struct EditorSetting{
     bool autosave= true;
     bool lineNumb = true;
