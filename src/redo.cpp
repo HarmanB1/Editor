@@ -1,6 +1,6 @@
+
 #include "redo.h"
 
-//history implmenetatonis
 
 void History::pushState(const State& state){
     if(undoStack.size()>= MAX_HISTORY){

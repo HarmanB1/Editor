@@ -1,3 +1,11 @@
+/**
+ * @file redo.h
+ * @brief Contains class functions related to cutting, copying, pasting, redoing, and undoing
+ * 
+ * @author Harman Bhogal
+ * @date 2025-5-25
+ */
+
 #pragma once
 #include <vector>
 #include <string>

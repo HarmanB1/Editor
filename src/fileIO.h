@@ -1,3 +1,12 @@
+/**
+ * @file fileIO.h
+ * @brief Main file handling class for ediotr
+ * 
+ * Contains file loading, saving and creating systems
+ * 
+ * @author Harman Bhogal
+ * @date 2025-5-25
+ */
 #pragma once
 
 #include <string>

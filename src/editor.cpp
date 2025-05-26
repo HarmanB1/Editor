@@ -1,9 +1,4 @@
 
-
-
-
-
-//have to fix print to terminal
 #include "fileIO.h"
 #include "editor.h"
 #include <iostream>

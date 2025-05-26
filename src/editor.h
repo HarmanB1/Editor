@@ -1,3 +1,14 @@
+/**
+ * @file editor.h
+ * @brief Main editor class for the text editor application
+ * 
+ * Contains the core editor functionality including input handling, 
+ * display management, and file operations.
+ * 
+ * @author Harman Bhogal
+ * @date 2025-5-25
+ */
+
 #pragma once
 #include <filesystem>
 #include <vector>
