@@ -21,6 +21,11 @@ Editor::Editor(): cursorX(0), cursorY(0), scrollY(0) {
     //loadsettings 
     loadSetting(); 
 
+    if(!has_colors()){
+        endwin();
+        printf("Terminal does not support color\n");
+        exit(1);
+    }
 
     //colours
     applyCol();
@@ -59,9 +64,12 @@ Editor::~Editor(){
     nocbreak();
     keypad(stdscr, FALSE);
     mouseinterval(0);
-    reset_shell_mode(); 
+    
    
     endwin();
+
+    reset_shell_mode(); 
+    system("tput reset 2>/dev/null");
     system("stty sane 2>/dev/null");
    
 }
@@ -443,6 +451,20 @@ void Editor::settings(){
         mvwprintw(settingWIN, 4, 4, "%s Display Line Number: %s", selected == 1 ? ">" : " ", setting.lineNumb ? "ON" : "OFF");
         mvwprintw(settingWIN, 5, 4, "%s Word Wrap: %s", selected == 2 ? ">" : " ", setting.wordWrap ? "ON" : "OFF");
         mvwprintw(settingWIN, 6, 4, "%s Ask for Save on close %s", selected == 3 ? ">" : " ", setting.saveOnClose? "ON" : "OFF");
+
+        for(int i =0;i< colArr.size(); i++){
+            if(colArr.at(i)== setting.textCol){
+                textcol_index = i;
+            }
+
+        }
+        for(int i =0;i< colArr.size(); i++){
+            if(colArr.at(i)== setting.statusBarCol){
+                statusBarCol_index = i;
+            }
+
+        }
+
         mvwprintw(settingWIN, 7, 4, "%s TextColour %s", selected == 4 ? ">" : " ", colArrString.at(textcol_index).c_str());
         mvwprintw(settingWIN, 8, 4, "%s Statusbar colour %s", selected == 5 ? ">" : " ", colArrString.at(statusBarCol_index).c_str());
        
@@ -472,14 +494,17 @@ void Editor::settings(){
                     case 4:
                         textcol_index= (textcol_index+1)%COLSIZE;
                         setting.textCol= colArr.at(textcol_index);
+                        applyCol();
                         break;
                     case 5:
                         statusBarCol_index= (statusBarCol_index+1)%COLSIZE;
                         setting.statusBarCol= colArr.at(statusBarCol_index);
+                        applyCol();
                         break;
                     case 6:
                         backgroundCol_index= (backgroundCol_index+1)%COLSIZE;
                         setting.backgroundCol= colArr.at(backgroundCol_index);
+                        applyCol();
                         break;    
                 }
                 break;
