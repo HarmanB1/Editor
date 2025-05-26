@@ -10,6 +10,11 @@
 #include <vector>
 #include <string>
 #include <cstddef>
+
+/**
+ * @struct State
+ * @brief Represents the editor state at a given time.
+ */
 struct State{
     std::vector<std::string> content;
     size_t cursorX;
@@ -17,7 +22,14 @@ struct State{
     std::string filepath;
     std::string directory;
 
-    //initializer
+    /**
+    * @brief Constructs a State object with the given parameters.
+    * @param c Lines of text content
+    * @param x Cursor horizontal position
+    * @param y Cursor vertical position (line number)
+    * @param f File path of the document
+    * @param d Directory of the file
+    */
     State(
         std::vector<std::string> c,
         size_t x,
@@ -27,9 +39,12 @@ struct State{
     
         : content(c), cursorX(x), cursorY(y), filepath(f), directory(d){}
 
-    
 };
 
+/**
+ * @class History
+ * @brief Manages undo and redo stacks of editor states.
+ */
 class History{
     public:
         
@@ -48,7 +63,10 @@ class History{
 
 };
 
-
+/**
+ * @class Clipboard
+ * @brief Manages undo and redo stacks of editor states.
+ */
 class Clipboard{
     public:
         void cut(State& state);

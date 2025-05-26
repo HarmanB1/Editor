@@ -27,7 +27,7 @@
  /**
  * @brief pushes current terminal state to undostack
  * 
- * @param State a state struct containing essential terminal info
+ * @param state a state struct containing essential terminal info
  */
 
 void History::pushState(const State& state){
@@ -42,7 +42,7 @@ void History::pushState(const State& state){
 /**
  * @brief pushes terminal state onto redo and gets last state from undo
  * 
- * @param State a state struct containing essential terminal info
+ * @param state a state struct containing essential terminal info
  * 
  * @return true if operation was succesful or false if undostack was empty
  */
@@ -60,7 +60,7 @@ bool History::undo(State& state){
 /**
  * @brief pushes terminal state onto undo and gets last state from redo
  * 
- * @param State a state struct containing essential terminal info
+ * @param state a state struct containing essential terminal info
  * 
  * @return true if operation was succesful or false if redstack was empty
  */
@@ -75,7 +75,7 @@ bool History::redo(State& state){
 
 /**
  * @brief clears redo and undo stacks
- */
+*/
 
 void History::clearRedo(){
     undoStack.clear();
@@ -90,7 +90,7 @@ void History::clearRedo(){
 /**
  * @brief cuts line from terminal by making it empty and saves it to clipboard
  * 
- * @param State a state struct containing essential terminal info
+ * @param state a state struct containing essential terminal info
  */
 
 
@@ -106,7 +106,7 @@ void Clipboard::cut(State& state){
 /**
  * @brief copies line the user has cursor on and saves to clipboard
  * 
- * @param State a state struct containing essential terminal info
+ * @param state a state struct containing essential terminal info
  */
 
 void Clipboard::copy(const State& state){
@@ -118,7 +118,7 @@ void Clipboard::copy(const State& state){
 /**
  * @brief pastes line saved in clipboard vector
  * 
- * @param State a state struct containing essential terminal info
+ * @param state a state struct containing essential terminal info
  */
 
 void Clipboard::paste(State& state){
