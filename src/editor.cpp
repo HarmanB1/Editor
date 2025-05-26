@@ -108,7 +108,7 @@ void Editor::run(){
         
         applyCol();
         
-        updateStatus();
+     //   updateStatus();
 
   
 
@@ -129,7 +129,7 @@ void Editor::run(){
 
       }
         
-
+      updateStatus();
        
         
     
@@ -502,7 +502,7 @@ void Editor::settings(){
     }
 
   
-
+    touchwin(stdscr);
 
     //restore window and delte
     copywin(backup, stdscr, 0, 0, 0, 0, row-1, col-1, 0);
@@ -669,6 +669,7 @@ void Editor::doInput(int ch){
 
         case 21: //for ctrl u settings
             settings();
+            refresh();
 
 
 
