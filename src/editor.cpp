@@ -1,10 +1,6 @@
 
 
-//fix ffff print
-//fix 2nd line 
-//fix col
-//fix eror
-//docs
+
 
 
 //have to fix print to terminal
@@ -380,6 +376,10 @@ void Editor::direct(std::string& directory){
             
         }
     }
+
+    if(directory.empty()){
+        directory = "./";
+    }
     //ensure it ends with /
     size_t len = strlen(directoryUser);
     if(len>0 && directoryUser[len-1]!= '/'){
@@ -388,6 +388,7 @@ void Editor::direct(std::string& directory){
             directoryUser[len+1] = '\0';
         }
     }
+
 
 
     noecho();
