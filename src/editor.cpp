@@ -42,6 +42,7 @@ Editor::Editor(): cursorX(0), cursorY(0), scrollY(0) {
     mouseinterval(0);
 
     content.push_back(""); //starts empty line
+    backup_content = content;
     running = true;
 
 }
@@ -218,7 +219,11 @@ void Editor::save(std::string filepath,std::vector<std::string>& content, std::v
 }
 
 void Editor::load(std::string& filepath,std::vector<std::string>& content, std::vector<std::string>& content_backup) {
+    
     if (directory.empty()) {
+        refresh();
+        content = backup_content;
+        
         mvprintw(0, 0, "Error: No directory set. Press Ctrl+D from main menu to set it.");
         getch();
         return;
@@ -320,7 +325,7 @@ void Editor::load(std::string& filepath,std::vector<std::string>& content, std::
     getch();
 }
 
-void Editor::direct(std::string& directory){
+void Editor::direct(std::string& directory, std::vector<std::string>& content, std::vector<std::string>& content_backup){
     editHistory.pushState(getCurrentState());
     clear();
     attron(COLOR_PAIR(2));
@@ -379,6 +384,8 @@ void Editor::direct(std::string& directory){
 
     if(directory.empty()){
         directory = "./";
+    }else{
+        directory = directoryUser;
     }
     //ensure it ends with /
     size_t len = strlen(directoryUser);
@@ -634,7 +641,7 @@ void Editor::doInput(int ch){
             
 
         case 4: //for ctrl d direcotry
-            direct(directory);
+            direct(directory, content, backup_content);
             break;
         //case 18: //for ctrl r
             
