@@ -47,13 +47,37 @@ struct State{
  */
 class History{
     public:
-        
+
+        /**
+         * @brief pushes current terminal state to undostack
+         * 
+         * @param state a state struct containing essential terminal info
+         */      
         void pushState(const State& state);
+
+        /**
+         * @brief pushes terminal state onto redo and gets last state from undo
+         * 
+         * @param state a state struct containing essential terminal info
+         * 
+         * @return true if operation was succesful or false if undostack was empty
+         */
         bool undo(State& state);
+
+        /**
+         * @brief pushes terminal state onto undo and gets last state from redo
+         * 
+         * @param state a state struct containing essential terminal info
+         * 
+         * @return true if operation was succesful or false if redstack was empty
+         */
         bool redo(State& state);
+
+        /**
+         * @brief clears redo and undo stacks
+        */
         void clearRedo();
-        //bool UndoOk() const;
-        //bool RedoOk() const;
+        
 
     private:
         std::vector<State> undoStack;
@@ -69,11 +93,30 @@ class History{
  */
 class Clipboard{
     public:
+
+        /**
+         * @brief cuts line from terminal by making it empty and saves it to clipboard
+         * 
+         * @param state a state struct containing essential terminal info
+         */
         void cut(State& state);
+
+        /**
+         * @brief pastes line saved in clipboard vector
+         * 
+         * @param state a state struct containing essential terminal info
+         */
         void copy(const State& state);
+
+        /**
+         * @brief pastes line saved in clipboard vector
+         * 
+         * @param state a state struct containing essential terminal info
+         */
+
         void paste(State& state);
-        //bool hasContent() const;
+      
         
     private:
-        std::vector<std::string> clipboard;
+        std::vector<std::string> clipboard; //member variable to keep track of copied or cut state
 };

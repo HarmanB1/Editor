@@ -12,6 +12,7 @@
 
 #include <sys/stat.h>
 
+
 bool fileIO::file_create(const std::string& filepath){
     std::ofstream file_new(filepath);
     if(!file_new.is_open()){
@@ -21,7 +22,7 @@ bool fileIO::file_create(const std::string& filepath){
     file_new.close();
     return true;
 
-    //open again redundant test
+   
 
 }
 

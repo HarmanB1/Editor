@@ -14,21 +14,6 @@
 #include "redo.h"
 
 
-/**
- * @brief 
- * 
- * @param filepath The destination file path (relative to current directory)
- * 
- * @return true if save succeeded, false otherwise
- * 
- */
-
-
- /**
- * @brief pushes current terminal state to undostack
- * 
- * @param state a state struct containing essential terminal info
- */
 
 void History::pushState(const State& state){
     if(undoStack.size()>= MAX_HISTORY){
@@ -39,13 +24,7 @@ void History::pushState(const State& state){
 }
 
 
-/**
- * @brief pushes terminal state onto redo and gets last state from undo
- * 
- * @param state a state struct containing essential terminal info
- * 
- * @return true if operation was succesful or false if undostack was empty
- */
+
 bool History::undo(State& state){
     if(undoStack.empty()){
         return false;
@@ -57,13 +36,7 @@ bool History::undo(State& state){
 
 }
 
-/**
- * @brief pushes terminal state onto undo and gets last state from redo
- * 
- * @param state a state struct containing essential terminal info
- * 
- * @return true if operation was succesful or false if redstack was empty
- */
+
 
 bool History::redo(State& state){
     if(redoStack.empty()) return false;
@@ -73,9 +46,7 @@ bool History::redo(State& state){
     return true;
 }
 
-/**
- * @brief clears redo and undo stacks
-*/
+
 
 void History::clearRedo(){
     undoStack.clear();
@@ -87,11 +58,6 @@ void History::clearRedo(){
 
 //Clipboard functions 
 
-/**
- * @brief cuts line from terminal by making it empty and saves it to clipboard
- * 
- * @param state a state struct containing essential terminal info
- */
 
 
 void Clipboard::cut(State& state){
@@ -103,11 +69,6 @@ void Clipboard::cut(State& state){
     state.cursorX = 0;
 }
 
-/**
- * @brief copies line the user has cursor on and saves to clipboard
- * 
- * @param state a state struct containing essential terminal info
- */
 
 void Clipboard::copy(const State& state){
     if(state.cursorY >= state.content.size()) return;
@@ -115,11 +76,7 @@ void Clipboard::copy(const State& state){
     clipboard.push_back(state.content[state.cursorY]);
 }
 
-/**
- * @brief pastes line saved in clipboard vector
- * 
- * @param state a state struct containing essential terminal info
- */
+
 
 void Clipboard::paste(State& state){
     if(clipboard.empty()) return;
