@@ -27,6 +27,7 @@ Editor::Editor(): cursorX(0), cursorY(0), scrollY(0) {
     //loadsettings 
     loadSetting(); 
 
+    //checks for colours
     if(!has_colors()){
         endwin();
         printf("Terminal does not support color\n");
@@ -36,24 +37,30 @@ Editor::Editor(): cursorX(0), cursorY(0), scrollY(0) {
     //colours
     applyCol();
    
+    //uses last saved time
     lastSaveTime = std::chrono::system_clock::now();
-    
     
     // Default settings
     autoSaveInterval = 30;
 
+    //sets terminal options
     raw();
     echo();
     keypad(stdscr, TRUE);
     curs_set(1);  
     mousemask(ALL_MOUSE_EVENTS, NULL);
 
-    printf("\033[?1003h\n"); // Enable mouse movement events
+    //escape code to terminal ||MAY BE DIFFERENT ON OTHER TERMINALS||
+    printf("\033[?1003h\n"); 
     fflush(stdout);
     mouseinterval(0);
 
+
     content.push_back(""); //starts empty line
+
     backup_content = content;
+
+    //this var determines running loop of program
     running = true;
 
 }
@@ -61,7 +68,8 @@ Editor::Editor(): cursorX(0), cursorY(0), scrollY(0) {
 
 Editor::~Editor(){
     
-    printf("\033[?1003l\n"); // Disable mouse events
+    //disables mouse controls and flushes out terminal
+    printf("\033[?1003l\n"); 
     fflush(stdout);
 
     //take care of Ncurses sequences
@@ -71,13 +79,83 @@ Editor::~Editor(){
     keypad(stdscr, FALSE);
     mouseinterval(0);
     
-   
+   //endwin and resets shell 
     endwin();
-
     reset_shell_mode(); 
     system("tput reset 2>/dev/null");
     system("stty sane 2>/dev/null");
    
+}
+
+void Editor::run(){
+    //stores current time
+    auto lastCheck = std::chrono::system_clock::now();
+
+    //main loop
+    while(running){
+        auto now = std::chrono::system_clock::now();
+
+        //checks difference between now and lastcheck and autosaves
+        if (std::chrono::duration_cast<std::chrono::seconds>(now - lastCheck).count() >= 1) {
+            autoSave();
+            lastCheck = now;
+        }
+
+        //erases screen
+        erase();
+        
+        //gets row col and sets visible rows, meaning rows interactable by user
+        int row, col;
+        getmaxyx(stdscr, row, col);
+        int visRows = row-2;
+
+        //handles scrolling logic regarding cursor
+        if (cursorY < scrollY) {
+            scrollY = cursorY;
+        } else if (cursorY >= scrollY + visRows) {
+            scrollY = cursorY - visRows + 1;
+        }
+
+        //status bar
+        applyCol();
+        
+  
+        //checks if setting linenumb is true
+        //if true, then prints the linenumber accordingly on each line
+        if(setting.lineNumb){
+            lineNumb();
+        }else{
+            for (int i = 0; i < visRows; i++) {
+                int lineIdx = scrollY + i;
+                if (lineIdx >= content.size()) break;
+            
+                mvhline(i, 0, ' ', col);
+                mvprintw(i, 0, "%s", content[lineIdx].c_str());
+                
+                
+            }
+
+        }
+            
+
+        updateStatus();
+       
+        //scrolling logic
+        int screenCursorY = cursorY - scrollY;
+
+        int screenCursorX = cursorX;
+        if(setting.lineNumb){
+            screenCursorX +=5; //5 for the linenumber characters
+        }
+
+        
+        //moves cursors and refreshes then gets input
+        move(screenCursorY, screenCursorX);
+        refresh();
+        getInput();
+
+        wordWrap();
+    }
 }
 
 std::string Editor::getConfigPath(){
@@ -98,71 +176,7 @@ void Editor::applyCol(){
 }
 
 
-void Editor::run(){
-    auto lastCheck = std::chrono::system_clock::now();
-    while(running){
-        auto now = std::chrono::system_clock::now();
-        if (std::chrono::duration_cast<std::chrono::seconds>(now - lastCheck).count() >= 1) {
-            autoSave();
-            lastCheck = now;
-        }
-        erase();
-        
-        int row, col;
-        getmaxyx(stdscr, row, col);
-        int visRows = row-2;
 
-        if (cursorY < scrollY) {
-            scrollY = cursorY;
-        } else if (cursorY >= scrollY + visRows) {
-            scrollY = cursorY - visRows + 1;
-        }
-
-        //status bar
-        
-        applyCol();
-        
-     //   updateStatus();
-
-  
-
-        //printing
-      //  attron(COLOR_PAIR(1));
-      if(setting.lineNumb){
-        lineNumb();
-      }else{
-        for (int i = 0; i < visRows; i++) {
-            int lineIdx = scrollY + i;
-            if (lineIdx >= content.size()) break;
-        
-            mvhline(i, 0, ' ', col);
-            mvprintw(i, 0, "%s", content[lineIdx].c_str());
-            
-            
-        }
-
-      }
-        
-      updateStatus();
-       
-        
-    
-        int screenCursorY = cursorY - scrollY;
-
-        int screenCursorX = cursorX;
-        if(setting.lineNumb){
-            screenCursorX +=5;
-        }
-
-        
-        
-        move(screenCursorY, screenCursorX);
-        refresh();
-        getInput();
-
-        wordWrap();
-    }
-}
 
 void Editor::updateStatus(){
     int row, col;

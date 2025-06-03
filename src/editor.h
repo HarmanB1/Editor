@@ -50,10 +50,15 @@ class Editor{
     public:
         Editor(); ///< Initializes ncurses and loads settings
         ~Editor(); ///< Cleans up ncurses and saves state
+
+        /**
+         * @brief Main editor event loop
+         * @note Handles input, rendering, and auto-save
+         */
         void run();
 
     private:
-        //main functions
+        
         void doInput(int ch);
         void getInput();
         void doMouse();
