@@ -1,5 +1,5 @@
 /**
- * @class Editor
+ * @file dditor.cpp
  * @brief Core text editor implementation
  *
  * Handles all editor functionality including:
@@ -14,7 +14,7 @@
 #include "editor.h"
 #include <iostream>
 
-constexpr int COLSIZE = 8;
+constexpr int COLSIZE = 8; //used for settings menu to indicate how many colour options
 
 
 

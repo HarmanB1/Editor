@@ -36,10 +36,20 @@ struct EditorSetting{
     std::string directory="";
 };
 
+/**
+ * @class Editor
+ * @brief Core text editor implementation
+ * 
+ * Handles all editor operations including:
+ * - Real-time text rendering
+ * - File management
+ * - User configuration
+ * - State history (undo/redo)
+ */
 class Editor{
     public:
-        Editor();
-        ~Editor();
+        Editor(); ///< Initializes ncurses and loads settings
+        ~Editor(); ///< Cleans up ncurses and saves state
         void run();
 
     private:
