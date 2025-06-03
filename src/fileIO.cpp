@@ -1,5 +1,5 @@
 /**
- * @class fileIO
+ * @file fileIO.cpp
  * @brief Core filehandling implementation
  *
  * Handles all editor functionality including:
