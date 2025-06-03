@@ -58,18 +58,44 @@ class Editor{
         void run();
 
     private:
-        
-        void doInput(int ch);
-        void getInput();
-        void doMouse();
+
+        /* Core Functions */
+
+        /**
+         * @brief takes in ASCII key and depending on key does a specfic action(example esc ASCII key ends program).
+         * @param ch is ASCII key value of mouse input.
+         */
+        void doInput(int ch); 
+
+        void getInput(); //< Fetches input (keyboard/mouse) and processes character from user
+
+        void doMouse();///< Handles mouse events.
+
+        /**
+         * @brief checks if file exists and if so, uses fileIO:save() to save file, also formats filepath to include directory.
+         * 
+         *@param filepath Path to the target file.
+         *@param content Reference to a vector storing loaded lines.
+         *@param content_backup Reference to a vector storing backup of loaded lines.
+         */
         void save(std::string filepath, std::vector<std::string>& content, std::vector<std::string>& content_backup);
+
+        /**
+         * @brief checks if file exists and if so, uses fileIO:save() to save file, also formats filepath to include directory.
+         * 
+         *@param filepath Path to the target file.
+         *@param content Reference to a vector storing loaded lines.
+         *@param content_backup Reference to a vector storing backup of loaded lines.
+         */
         void load(std::string& filepath, std::vector<std::string>& content, std::vector<std::string>& content_backup);
+
+        
         void direct(std::string& directory, std::vector<std::string>& content, std::vector<std::string>& content_backup);
     
-       void autoSave();
-       void lineNumb();
-       void wordWrap();
-       void saveOnClose();
+        void autoSave();
+        void lineNumb();
+        void wordWrap();
+        void saveOnClose();
 
 
 

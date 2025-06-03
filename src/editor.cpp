@@ -158,6 +158,262 @@ void Editor::run(){
     }
 }
 
+void Editor::doInput(int ch){
+    switch(ch){
+        case 26: //for ctrl z for going undo
+        {
+            State currentState = getCurrentState();
+            if(editHistory.undo(currentState)){
+                applyState(currentState);
+            }
+                
+            break;
+
+        }
+            
+        case 25: //ctrl Y for redo
+        {
+            State currentState = getCurrentState();
+            if(editHistory.redo(currentState)){
+                applyState(currentState);
+            }
+                
+            break;
+
+        }
+
+        case 24: //ctrl x for cut
+        {
+            editHistory.pushState(getCurrentState());
+            State currentState = getCurrentState();
+            editClipboard.cut(currentState);
+            applyState(currentState);
+            break;
+
+        }
+        
+        case 3:{ //  ctrl c for copy
+            editClipboard.copy(getCurrentState());
+            break;
+        }
+
+        case 22://ctrl v
+        {
+            editHistory.pushState(getCurrentState());
+            State currentState = getCurrentState();
+            editClipboard.paste(currentState);
+            applyState(currentState);
+            break;
+        }
+            
+
+        case 4: //for ctrl d direcotry
+            direct(directory, content, backup_content);
+            break;
+        
+            
+        case 12: //for ctrl l loading
+            backup_content= content;
+            content.clear();
+            load(filepath, content, backup_content);
+            content.push_back("");
+
+            break;
+
+        case 19: //for ctrl s saving
+            save(filepath, content, backup_content);
+            break;
+
+
+        case 6: //for ctrl f filepath
+            filepath = "";
+            
+            clear();
+            cursorX = cursorY = 0;
+            break;
+            
+
+        case 21: //for ctrl u settings
+            settings();
+            refresh();
+
+
+        /*keyboard functions*/
+        case KEY_UP: if(cursorY> 0){
+            
+            cursorY--;
+            cursorX=content[cursorY].size();
+            if(content[cursorY].size()==0){
+                cursorX=0;
+            }
+            break;
+        }
+        else{
+            
+                break;
+            }
+
+        case KEY_DOWN: if(cursorY<content.size()-1){
+            cursorY++;
+            cursorX=content[cursorY].size();
+            if(content[cursorY].size()==0){
+                cursorX=0;
+            }
+            break;
+        }else{
+            content.push_back("");
+            cursorY++;
+            cursorX=0;
+            break;
+        }
+
+        case KEY_LEFT: if(cursorX >0){
+            cursorX--;
+            break;
+        }else{
+                break;
+            }
+            
+        case KEY_RIGHT: if(cursorX < content[cursorY].size()){
+            cursorX++;
+            break;
+            
+        }else{
+                break;
+            }
+        case 10:
+        //asci for enter
+        {
+            editHistory.pushState(getCurrentState());
+            //take part of line at cursorx
+            std::string newLine = content[cursorY].substr(cursorX);
+            content[cursorY]= content[cursorY].substr(0, cursorX);//put new content at line back at same spot
+            content.insert(content.begin()+cursorY+1, newLine);//insert newline at proper spot in vector
+            cursorY++;
+            cursorX=0;
+            break;
+
+        }
+        case 127: //backspace
+            editHistory.pushState(getCurrentState());
+            
+                if(cursorX>0){
+                    //normal deletion
+                    content[cursorY].erase(cursorX-1,1);
+                    cursorX--;
+                    
+                }else if(cursorY>0){
+                    //deletion if cursor is on start of line
+                    cursorX = content[cursorY-1].size();
+                    content[cursorY-1]+= content[cursorY];//concatenate line below to line above
+                    content.erase(content.begin()+cursorY);
+                    cursorY--;
+
+                }
+                break;
+
+           
+            
+
+        case ' ': //case space
+        editHistory.pushState(getCurrentState());
+        //adding space
+            content[cursorY].insert(cursorX, 1, ' ');
+            cursorX++;
+            break;
+        case 27: //acsi for escape
+            
+            saveOnClose();
+            clear();
+            
+            mvprintw(0, 0, "ENDING PROGRAM");
+            refresh();
+
+            //timer to let user see message
+            napms(1000);
+            running = false;
+            break;
+        default: //regular character
+            if(isprint(ch)){
+                editHistory.pushState(getCurrentState());
+                content[cursorY].insert(cursorX, 1, ch);
+             
+                cursorX++;
+
+                wordWrap();
+            }
+
+            break;
+    }
+}
+
+void Editor::getInput(){
+    int ch = getch();
+    if (ch == KEY_MOUSE) {
+        doMouse();
+    } else {
+        doInput(ch);
+    }
+ 
+}
+
+void Editor::doMouse(){
+    MEVENT event;
+    if(getmouse(&event)== OK){
+        if(event.bstate& BUTTON1_CLICKED){
+             
+            //gets mouse cursor info
+            cursorY = event.y;
+            cursorX = event.x;
+
+            //checking for linenumb in order to shift cursor locations
+            if(setting.lineNumb && cursorX >= 5){
+                cursorX -=5;
+            }else if(setting.lineNumb){
+                cursorX =0;
+            }
+
+            //bound checking
+            if(cursorY >= content.size()){
+                cursorY = content.size()-1;
+            }
+            if(cursorX > content[cursorY].size()){
+                cursorX = content[cursorY].size();
+            }
+        }
+
+    }
+   
+}
+
+void Editor::save(std::string filepath,std::vector<std::string>& content, std::vector<std::string>& content_backup) {
+    editHistory.pushState(getCurrentState()); //savestate
+    
+    //format filepath to include specified directory
+    std::filesystem::path directory_path = directory;
+    std::filesystem::path userPath = directory_path / filepath;
+    userPath = userPath.lexically_normal().string();
+
+    //checks file path emptiness
+    if (userPath.empty()) {
+        clear();
+        mvprintw(0, 0, "No file name entered or file. Press any key to return.");
+        refresh();
+        getch();
+        return;
+    }
+   
+    //clear area and print message based on action, then return 
+    clear();
+    if (fileIO::save(userPath, content)) {
+        mvprintw(0, 0, "File saved successfully.");
+    } else {
+        mvprintw(0, 0, "Failed to save file.");
+    }
+    mvprintw(1, 0, "Press any key to return.");
+    getch();
+}
+
 std::string Editor::getConfigPath(){
     namespace fs = std::filesystem;
     fs::path cwd = fs::current_path();
@@ -217,34 +473,6 @@ void Editor::updateStatus(){
 }
 
 
-void Editor::save(std::string filepath,std::vector<std::string>& content, std::vector<std::string>& content_backup) {
-    editHistory.pushState(getCurrentState());
-    
-    
-    std::filesystem::path directory_path = directory;
-    std::filesystem::path userPath = directory_path / filepath;
-    userPath = userPath.lexically_normal().string();
-
-
-    if (userPath.empty()) {
-        clear();
-        mvprintw(0, 0, "No file name entered or file. Press any key to return.");
-        refresh();
-        getch();
-        return;
-    }
-   
-    
-    
-    clear();
-    if (fileIO::save(userPath, content)) {
-        mvprintw(0, 0, "File saved successfully.");
-    } else {
-        mvprintw(0, 0, "Failed to save file.");
-    }
-    mvprintw(1, 0, "Press any key to return.");
-    getch();
-}
 
 void Editor::load(std::string& filepath,std::vector<std::string>& content, std::vector<std::string>& content_backup) {
     
@@ -596,236 +824,11 @@ void Editor::loadSetting(){
 
 
 
-void Editor::getInput(){
-    int ch = getch();
-    if (ch == KEY_MOUSE) {
-        doMouse();
-    } else {
-        doInput(ch);
-    }
-    
-    
-    
-}
-
-void Editor::doMouse(){
-    MEVENT event;
-    if(getmouse(&event)== OK){
-        if(event.bstate& BUTTON1_CLICKED){
-             
-            cursorY = event.y;
-            cursorX = event.x;
-
-            if(setting.lineNumb && cursorX >= 5){
-                cursorX -=5;
-            }else if(setting.lineNumb){
-                cursorX =0;
-            }
-
-            //bound checking
-            if(cursorY >= content.size()){
-                cursorY = content.size()-1;
-            }
-            if(cursorX > content[cursorY].size()){
-                cursorX = content[cursorY].size();
-            }
-        }
-
-    }
-   
-}
-
-
-void Editor::doInput(int ch){
-    switch(ch){
-        case 26: //for ctrl z for going undo
-        {
-            State currentState = getCurrentState();
-            if(editHistory.undo(currentState)){
-                applyState(currentState);
-            }
-                
-            break;
-
-        }
-            
-        case 25: //ctrl Y for redo
-        {
-            State currentState = getCurrentState();
-            if(editHistory.redo(currentState)){
-                applyState(currentState);
-            }
-                
-            break;
-
-        }
-
-        case 24: //ctrl x for cut
-        {
-            editHistory.pushState(getCurrentState());
-            State currentState = getCurrentState();
-            editClipboard.cut(currentState);
-            applyState(currentState);
-            break;
-
-        }
-        
-        case 3:{ //  ctrl c for copy
-            editClipboard.copy(getCurrentState());
-            break;
-        }
-
-        case 22://ctrl v
-        {
-            editHistory.pushState(getCurrentState());
-            State currentState = getCurrentState();
-            editClipboard.paste(currentState);
-            applyState(currentState);
-            break;
-        }
-            
-
-        case 4: //for ctrl d direcotry
-            direct(directory, content, backup_content);
-            break;
-        //case 18: //for ctrl r
-            
-        case 12: //for ctrl l loading
-            backup_content= content;
-            content.clear();
-            load(filepath, content, backup_content);
-            content.push_back("");
-
-            break;
-
-        case 19: //for ctrl s saving
-            //backup_content=content;
-            save(filepath, content, backup_content);
-            break;
-
-
-        case 6: //for ctrl f filepath
-            filepath = "";
-            
-            clear();
-            cursorX = cursorY = 0;
-            break;
-            
-
-        case 21: //for ctrl u settings
-            settings();
-            refresh();
 
 
 
 
-        case KEY_UP: if(cursorY> 0){
-            
-            cursorY--;
-            cursorX=content[cursorY].size();
-            if(content[cursorY].size()==0){
-                cursorX=0;
-            }
-            break;
-        }
-        else{
-            
-                break;
-            }
 
-        case KEY_DOWN: if(cursorY<content.size()-1){
-            cursorY++;
-            cursorX=content[cursorY].size();
-            if(content[cursorY].size()==0){
-                cursorX=0;
-            }
-            break;
-        }else{
-            content.push_back("");
-            cursorY++;
-            cursorX=0;
-            break;
-        }
-
-        case KEY_LEFT: if(cursorX >0){
-            cursorX--;
-            break;
-        }else{
-                break;
-            }
-            
-        case KEY_RIGHT: if(cursorX < content[cursorY].size()){
-            cursorX++;
-            break;
-            
-        }else{
-                break;
-            }
-        case 10:
-        //asci for enter
-        {
-            editHistory.pushState(getCurrentState());
-            //take part of line at cursorx
-            std::string newLine = content[cursorY].substr(cursorX);
-            content[cursorY]= content[cursorY].substr(0, cursorX);//put new content at line back at same spot
-            content.insert(content.begin()+cursorY+1, newLine);//insert newline at proper spot in vector
-            cursorY++;
-            cursorX=0;
-            break;
-
-        }
-        case 127:
-            editHistory.pushState(getCurrentState());
-            
-                if(cursorX>0){
-                    //normal deletion
-                    content[cursorY].erase(cursorX-1,1);
-                    cursorX--;
-                    
-                }else if(cursorY>0){
-                    //deletion if cursor is on start of line
-                    cursorX = content[cursorY-1].size();
-                    content[cursorY-1]+= content[cursorY];//concatenate line below to line above
-                    content.erase(content.begin()+cursorY);
-                    cursorY--;
-
-                }
-                break;
-
-                //backspace
-            
-
-        case ' ':
-        editHistory.pushState(getCurrentState());
-        //adding space
-            content[cursorY].insert(cursorX, 1, ' ');
-            cursorX++;
-            break;
-        case 27:
-        //acsi for escape
-            
-           saveOnClose();
-            clear();
-            
-            mvprintw(0, 0, "ENDING PROGRAM");
-            refresh();
-            napms(1000);
-            running = false;
-            break;
-        default:
-            if(isprint(ch)){
-                editHistory.pushState(getCurrentState());
-                content[cursorY].insert(cursorX, 1, ch);
-             
-                cursorX++;
-
-                wordWrap();
-            }
-
-            break;
-    }
-    //have bound checker
-}
 
 
 State Editor::getCurrentState() const{
