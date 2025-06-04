@@ -3,7 +3,7 @@
 ![C++](https://img.shields.io/badge/C++-17-blue.svg)
 ![ncurses](https://img.shields.io/badge/ncurses-6.2+-green.svg)
 ![Platform](https://img.shields.io/badge/Platform-macOS/Linux-lightgrey.svg)
-[![Documentation](https://img.shields.io/badge/docs-doxygen-blue.svg)](https://yourusername.github.io/your-repo/)
+[![Documentation](https://img.shields.io/badge/docs-doxygen-blue.svg)](https://harmanb1.github.io/Editor/)
 
 A lightweight, keyboard-focused text editor optimized for full-screen terminal use with advanced features.
 
