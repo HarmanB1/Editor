@@ -209,7 +209,7 @@ void Editor::doInput(int ch){
             
 
         case 4: //for ctrl d direcotry
-            direct(directory, content, backup_content);
+            direct(directory);
             break;
         
             
@@ -433,6 +433,7 @@ void Editor::load(std::string& filepath,std::vector<std::string>& content, std::
     clear();
     attron(COLOR_PAIR(2));
     int row, col;
+    row = 0;
     getmaxyx(stdscr, row, col);
     mvhline(0, 0, ' ', col);
     mvprintw(0, 0, "ESC: Cancel | Type in file name such as: t1.txt (set directory beforehand from main menu using ^d, )");
@@ -528,12 +529,13 @@ void Editor::load(std::string& filepath,std::vector<std::string>& content, std::
     getch();
 }
 
-void Editor::direct(std::string& directory, std::vector<std::string>& content, std::vector<std::string>& content_backup){
+void Editor::direct(std::string& directory){
     //saves state
     editHistory.pushState(getCurrentState());
     clear();
     attron(COLOR_PAIR(2));
     int row, col;
+    row = 0;
     getmaxyx(stdscr, row, col);
     mvhline(0, 0, ' ', col);
     mvprintw(0, 0, "ESC: Cancel | Type in directory ex: /Users/JamesSmith/downloads/ , to save, use save settings in settings");
@@ -646,7 +648,7 @@ void Editor::lineNumb(){
 
     for(int i=0; i < visRows; i++){
         int lineIdx = scrollY +i;
-        if(lineIdx < content.size()){
+        if(lineIdx < static_cast<int>(content.size())){
             move(i, 0);
             attron(A_REVERSE);
             printw("%4d ", lineIdx +1);

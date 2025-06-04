@@ -91,10 +91,8 @@ class Editor{
         /**
          * @brief Sets or changes the working directory
          * @param directory Reference to current directory path 
-         * @param content Reference to current content
-         * @param content_backup Reference to backup content
          */
-        void direct(std::string& directory, std::vector<std::string>& content, std::vector<std::string>& content_backup);
+        void direct(std::string& directory);
     
         /**
          * @brief Performs automatic saving if enabled and interval has elapsed
