@@ -1,39 +1,74 @@
-# Editor Project
+# ✏️ Terminal Text Editor (TTE)
 
-## Overview
+![C++](https://img.shields.io/badge/C++-17-blue.svg)
+![ncurses](https://img.shields.io/badge/ncurses-6.2+-green.svg)
+![Platform](https://img.shields.io/badge/Platform-macOS/Linux-lightgrey.svg)
+[![Documentation](https://img.shields.io/badge/docs-doxygen-blue.svg)](https://yourusername.github.io/your-repo/)
 
-This is a basic text editor built using **C++** and **ncurses** for terminal-based applications. It provides a simple interface for text editing with keyboard and mouse support, including essential text manipulation functions like insert, delete, and navigation.
+A lightweight, keyboard-focused text editor optimized for full-screen terminal use with advanced features.
 
-## Features
-
-- **Basic Navigation**:
-  - Arrow keys to move the cursor
-  - Home/End for line navigation
-  - Page Up/Page Down for scrolling
-- **Text Editing**:
-  - Insert and delete characters
-  - Handle special characters (like backspace and enter)
-  - Handle mouse events (e.g., click to move cursor)
-- **Scrollable Interface**:
-  - Automatically scrolls content when the cursor reaches the top/bottom of the screen
-  - Dynamic scrolling with the arrow keys
-- **Fille managment from within program**:
-  - Load and save files.
-  - Allows renaming of files
+## 🚀 Key Features
 
 
-## Requirements
+### ✨ Core Functionality
+- **Text Manipulation**
+  - Intuitive cursor movement (arrow keys)
+  - Screen Scrolling
+  - Natural typing support through keyboard
+  - Mouse support for cursor positioning
+  - Line operations (cut/copy/paste)
+  
+### 🗂 File Management
+- Load/save files with path completion
+- Auto-save functionality (configurable)
+- Directory navigation and switching
+- Save configured settings
 
-- **C++ compiler** (e.g., g++)
-- **ncurses** library for terminal handling
+### ⚙️ Customization
+- Color scheme configuration
+- Toggleable line numbers
+- Word wrap modes
+- Configurable status bar
 
-To install `ncurses` on your system:
-- **Linux (Ubuntu/Debian)**: `sudo apt-get install libncurses5-dev libncursesw5-dev`
-- **macOS**: `brew install ncurses`
+### 🔄 Advanced Operations
+- Full undo/redo history
+- clipboard buffer to redo and undo
+- Auto save feature
+- Line number display 
 
-## Installation
+### 🖥 Terminal Compatibility
+This terminal application is designed for fullscreen use
+| Terminal       | Full-Screen Support | Notes                                                      |
+|----------------|---------------------|------------------------------------------------------------|
+| iTerm2         | ✅ Excellent        |   Reccomended Environment                                  |
+| Linux Console  | ⚠️ Partial          |   May require different escape codes or may not show colour|
 
-1. Clone the repository:
-   terminal
-   git clone project repo link
-   cd editor-project
+### Prerequisites
+- C++17 compatible compiler (Clang 10+/GCC 9+)
+- ncurses library (6.2+ recommended)
+- CMake (3.30+ Reccomended)
+- Doxygen (optional, for documentation)
+
+# macOS
+brew install ncurses cmake doxygen
+
+
+## 💻 Installation & Full-Screen Setup
+
+This is intended to be run in fullscreen view,
+Open your terminal and run the following commands:
+
+git clone https://github.com/HarmanB1/Editor.git
+cd Editor
+
+mkdir build 
+cd build
+cmake ..
+
+make
+
+#Documentation 
+To view documententation:
+Visit https://harmanb1.github.io/Editor/ or run index.html from docs folder
+
+ 
