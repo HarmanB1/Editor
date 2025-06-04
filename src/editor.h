@@ -89,7 +89,12 @@ class Editor{
          */
         void load(std::string& filepath, std::vector<std::string>& content, std::vector<std::string>& content_backup);
 
-        
+        /**
+         * @brief Sets or changes the working directory
+         * @param directory Reference to current directory path 
+         * @param content Reference to current content
+         * @param content_backup Reference to backup content
+         */
         void direct(std::string& directory, std::vector<std::string>& content, std::vector<std::string>& content_backup);
     
         void autoSave();

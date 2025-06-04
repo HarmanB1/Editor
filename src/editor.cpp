@@ -414,65 +414,6 @@ void Editor::save(std::string filepath,std::vector<std::string>& content, std::v
     getch();
 }
 
-std::string Editor::getConfigPath(){
-    namespace fs = std::filesystem;
-    fs::path cwd = fs::current_path();
-    fs::path config = cwd/ "../cfg/settings.cfg";
-    return config.lexically_normal().string();
-}
-
-
-void Editor::applyCol(){
-    start_color();
-    use_default_colors();
-    //init_pair(1, COLOR_WHITE, COLOR_BLACK);
-    init_pair(2, setting.textCol, setting.statusBarCol);
-
-
-}
-
-
-
-
-void Editor::updateStatus(){
-    int row, col;
-    getmaxyx(stdscr, row, col);
-
-    int visRows = row-2;
-
-    attron(COLOR_PAIR(2));
-    
-    mvhline(visRows, 0, ' ', col); // Draw empty line with color
-    mvhline(visRows+1, 0, ' ', col); // Draw empty line with color
-
-    std::string nameDisplay = filepath.empty() ? "No file entered" : filepath;
-    std::string posInfo = "Ln " + std::to_string(cursorY+1)+ ", Col" + std::to_string(cursorX +1);
-    std::string topLine = " ESC: Quit | ^S: Save | ^L: Load| ^F: New | ^U: Settings Menu | " + nameDisplay + " | " + setting.directory + " | " + posInfo;
-
-    //formating for time
-    auto now = std::chrono::system_clock::now();
-    std::time_t saveTime = std::chrono::system_clock::to_time_t(lastSaveTime);
-    std::tm tm = *std::localtime(&saveTime);
-    char timeStr[20];
-    std::strftime(timeStr, sizeof(timeStr), "%H: %M :%S", &tm);
-    std::string saveTiming = "Last Saved: " + std::string(timeStr);
-
-    std::string bottomLine = " ^Z: Undo | ^Y: Redo | ^X: cutline | ^C: copyline | ^V: pastline | ^D: setDirectory | "+ saveTiming+" save directory name for next session please save in settings";
-
-    if(topLine.length()>static_cast<size_t>(col)){
-        topLine = topLine.substr(0, col-3)+ "...";
-        bottomLine = bottomLine.substr(0, col-3)+ "...";
-    }
-   
-    
-
-    mvprintw(visRows, 0, topLine.c_str());
-    mvprintw(visRows+1, 0, bottomLine.c_str());
-    attroff(COLOR_PAIR(2));
-
-}
-
-
 
 void Editor::load(std::string& filepath,std::vector<std::string>& content, std::vector<std::string>& content_backup) {
     
@@ -486,6 +427,7 @@ void Editor::load(std::string& filepath,std::vector<std::string>& content, std::
     }
     editHistory.pushState(getCurrentState());
         
+    //pops open new window asking user for file name
     clear();
     attron(COLOR_PAIR(2));
     int row, col;
@@ -502,6 +444,8 @@ void Editor::load(std::string& filepath,std::vector<std::string>& content, std::
     int ch;
     int i = 0; //x position
     noecho();
+
+    //main while loop asking user for filepath
     while (i < 255 && (ch = getch()) != '\n') {
         
         if (ch == 27) { // ESC
@@ -536,8 +480,8 @@ void Editor::load(std::string& filepath,std::vector<std::string>& content, std::
     }
     noecho();
     curs_set(1);
-   // std::string pathInputCopy = pathInput;
-   // std::string pathInput = "/"+ pathInputCopy;
+
+    //sets directory + userInput as as path to load from
     filepath = pathInput;
 
     std::filesystem::path directory_path = directory;
@@ -545,6 +489,7 @@ void Editor::load(std::string& filepath,std::vector<std::string>& content, std::
     userPath = userPath.lexically_normal().string();
 
     
+    //checks for empty or non existing files
 
     if (userPath.empty()) {
         mvprintw(0, 0, "No file name entered. Press any key to return.");
@@ -582,6 +527,7 @@ void Editor::load(std::string& filepath,std::vector<std::string>& content, std::
 }
 
 void Editor::direct(std::string& directory, std::vector<std::string>& content, std::vector<std::string>& content_backup){
+    //saves state
     editHistory.pushState(getCurrentState());
     clear();
     attron(COLOR_PAIR(2));
@@ -605,7 +551,7 @@ void Editor::direct(std::string& directory, std::vector<std::string>& content, s
     int i = strlen(directoryUser);//x position
     noecho();
 
-    
+    //while loop to get directory from user
     while (i < 255 && (ch = getch()) != '\n') {
         
         if (ch == 27) { // ESC
@@ -665,6 +611,67 @@ void Editor::direct(std::string& directory, std::vector<std::string>& content, s
     refresh();
     getch();
 }
+
+
+std::string Editor::getConfigPath(){
+    namespace fs = std::filesystem;
+    fs::path cwd = fs::current_path();
+    fs::path config = cwd/ "../cfg/settings.cfg";
+    return config.lexically_normal().string();
+}
+
+
+void Editor::applyCol(){
+    start_color();
+    use_default_colors();
+    //init_pair(1, COLOR_WHITE, COLOR_BLACK);
+    init_pair(2, setting.textCol, setting.statusBarCol);
+
+
+}
+
+
+
+
+void Editor::updateStatus(){
+    int row, col;
+    getmaxyx(stdscr, row, col);
+
+    int visRows = row-2;
+
+    attron(COLOR_PAIR(2));
+    
+    mvhline(visRows, 0, ' ', col); // Draw empty line with color
+    mvhline(visRows+1, 0, ' ', col); // Draw empty line with color
+
+    std::string nameDisplay = filepath.empty() ? "No file entered" : filepath;
+    std::string posInfo = "Ln " + std::to_string(cursorY+1)+ ", Col" + std::to_string(cursorX +1);
+    std::string topLine = " ESC: Quit | ^S: Save | ^L: Load| ^F: New | ^U: Settings Menu | " + nameDisplay + " | " + setting.directory + " | " + posInfo;
+
+    //formating for time
+    auto now = std::chrono::system_clock::now();
+    std::time_t saveTime = std::chrono::system_clock::to_time_t(lastSaveTime);
+    std::tm tm = *std::localtime(&saveTime);
+    char timeStr[20];
+    std::strftime(timeStr, sizeof(timeStr), "%H: %M :%S", &tm);
+    std::string saveTiming = "Last Saved: " + std::string(timeStr);
+
+    std::string bottomLine = " ^Z: Undo | ^Y: Redo | ^X: cutline | ^C: copyline | ^V: pastline | ^D: setDirectory | "+ saveTiming+" save directory name for next session please save in settings";
+
+    if(topLine.length()>static_cast<size_t>(col)){
+        topLine = topLine.substr(0, col-3)+ "...";
+        bottomLine = bottomLine.substr(0, col-3)+ "...";
+    }
+   
+    
+
+    mvprintw(visRows, 0, topLine.c_str());
+    mvprintw(visRows+1, 0, bottomLine.c_str());
+    attroff(COLOR_PAIR(2));
+
+}
+
+
 
         
 void Editor::settings(){
