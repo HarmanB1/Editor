@@ -875,7 +875,6 @@ void Editor::applyCol(){
 
 }
 
-
 void Editor::updateStatus(){
     int row, col;
     getmaxyx(stdscr, row, col);
@@ -916,25 +915,8 @@ void Editor::updateStatus(){
 
 }
 
-std::string Editor::getConfigPath(){
-    namespace fs = std::filesystem;
-    fs::path cwd = fs::current_path();
-    fs::path config = cwd/ "../cfg/settings.cfg";
-    return config.lexically_normal().string();
-}
-
-
-
-
-
-
-
-
-
-
-        
-
 void Editor::saveSetting(){
+    //opens config file, then writes settings
     std::ofstream config_file(getConfigPath());
     if(config_file){
         config_file << setting.autosave << '\n'
@@ -952,6 +934,7 @@ void Editor::saveSetting(){
 }
 
 void Editor::loadSetting(){
+    //loards settings from config file
     std::ifstream config_file(getConfigPath());
     if(config_file){
         config_file >> setting.autosave
@@ -970,13 +953,12 @@ void Editor::loadSetting(){
 
 }
 
-
-
-
-
-
-
-
+std::string Editor::getConfigPath(){
+    namespace fs = std::filesystem; //sets namespace just for this function
+    fs::path cwd = fs::current_path();
+    fs::path config = cwd/ "../cfg/settings.cfg";
+    return config.lexically_normal().string();
+}
 
 
 State Editor::getCurrentState() const{

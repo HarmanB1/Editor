@@ -134,10 +134,23 @@ class Editor{
          */
         void updateStatus();
  
-       //settings related to editor settings struct
-        EditorSetting setting;
+        /* functions related to settings struct*/
+        EditorSetting setting; ///< Current editor settings
+
+        /**
+         * @brief Saves current settings to configuration file
+         */
         void saveSetting();
+
+        /**
+         * @brief Loads settings from configuration file
+         */
         void loadSetting();
+
+        /**
+         * @brief Gets the path to the configuration file
+         * @return std::string containing the full config file path
+         */
         std::string getConfigPath();
 
         //variables for settings
