@@ -110,9 +110,9 @@ void Editor::run(){
         int visRows = row-2;
 
         //handles scrolling logic regarding cursor
-        if (cursorY < scrollY) {
+        if (static_cast<int>(cursorY) < scrollY) {
             scrollY = cursorY;
-        } else if (cursorY >= scrollY + visRows) {
+        } else if (static_cast<int>(cursorY) >= scrollY + visRows) {
             scrollY = cursorY - visRows + 1;
         }
 
@@ -128,7 +128,7 @@ void Editor::run(){
         }else{
             for (int i = 0; i < visRows; i++) {
                 int lineIdx = scrollY + i;
-                if (lineIdx >= content.size()) break;
+                if (lineIdx >= static_cast<int>(content.size())) break;
             
                 mvhline(i, 0, ' ', col);
                 mvprintw(i, 0, "%s", content[lineIdx].c_str());
@@ -222,7 +222,7 @@ void Editor::doInput(int ch){
             break;
 
         case 19: //for ctrl s saving
-            save(filepath, content, backup_content);
+            save(filepath, content);
             break;
 
 
@@ -387,7 +387,8 @@ void Editor::doMouse(){
    
 }
 
-void Editor::save(std::string filepath,std::vector<std::string>& content, std::vector<std::string>& content_backup) {
+void Editor::save(std::string filepath,std::vector<std::string>& content) {
+
     editHistory.pushState(getCurrentState()); //savestate
     
     //format filepath to include specified directory
@@ -622,7 +623,7 @@ void Editor::autoSave(){
 
     if(diff >= autoSaveInterval){
         if(!filepath.empty()){
-            save(filepath, content, backup_content);
+            save(filepath, content);
             lastSaveTime = now;
         }
     }
@@ -727,7 +728,7 @@ void Editor::saveOnClose(){
         while(done){
             int ch = getch();
             if(ch == 89 || ch == 121){
-                save(filepath, content, backup_content);
+                save(filepath, content);
                 break;
 
             }else if(ch == 78 || ch == 110 ){

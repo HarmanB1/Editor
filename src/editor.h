@@ -76,9 +76,8 @@ class Editor{
          * 
          *@param filepath Path to the target file.
          *@param content Reference to a vector storing loaded lines.
-         *@param content_backup Reference to a vector storing backup of loaded lines.
          */
-        void save(std::string filepath, std::vector<std::string>& content, std::vector<std::string>& content_backup);
+        void save(std::string filepath, std::vector<std::string>& content);
 
         /**
          * @brief checks if file exists and if so, uses fileIO:save() to save file, also formats filepath to include directory.
@@ -167,32 +166,30 @@ class Editor{
         void applyState(const State& state);
 
 
-        //Members related to Editorstate
-        std::vector<int> colArr = {COLOR_BLACK,COLOR_RED,COLOR_GREEN,COLOR_YELLOW, COLOR_BLUE, COLOR_MAGENTA,COLOR_CYAN, COLOR_WHITE};
-        std::vector<std::string> colArrString = {"Black", "Red", "Green", "Yellow", "Blue", "Magenta", "Cyan", "White"};
-        int textcol_index=7;
-        int statusBarCol_index=2;
-        int backgroundCol_index=0;
+        /*Members related to Editorstate*/
+        std::vector<int> colArr = {COLOR_BLACK,COLOR_RED,COLOR_GREEN,COLOR_YELLOW, COLOR_BLUE, COLOR_MAGENTA,COLOR_CYAN, COLOR_WHITE}; ///< vector to store colours
+        std::vector<std::string> colArrString = {"Black", "Red", "Green", "Yellow", "Blue", "Magenta", "Cyan", "White"}; ///< Current text colour names
+        int textcol_index=7; ///< Current text color index
+        int statusBarCol_index=2; ///< Current status bar color index
+        int backgroundCol_index=0; ///< Current background color index
 
        
-        //members of editor class
-        std::vector<std::string> content; //content of each line index representing y 
-        std::vector<std::string> backup_content;
-        size_t cursorX, cursorY;
-        bool running; //indicator to stop running program
-        std::string filepath;
-        std::string directory;
-        int scrollY; //tracks scroll pos
+        /*members of editor class*/
+        std::vector<std::string> content; ///< content of each line index representing y 
+        std::vector<std::string> backup_content; ///< backup content of each line index representing y 
+        size_t cursorX, cursorY; ///< x and y positions of mouse 
+        bool running; ///< indicator to stop running program
+        std::string filepath; ///< Current file path
+        std::string directory; ///< Current working directory
+        int scrollY;  ///< Current vertical scroll position
 
-        //history and clipboard
-        History editHistory;
-        Clipboard editClipboard;
+        /*history and clipboard*/
+        History editHistory; ///< instance of history class
+        Clipboard editClipboard; ///< Interval of clipboard
 
-        
-
-        //time managment
-        std::chrono::system_clock::time_point lastSaveTime;
-        int autoSaveInterval;
+        /*Time management*/
+        std::chrono::system_clock::time_point lastSaveTime; ///< Time of last save
+        int autoSaveInterval; ///< Interval for autosave in seconds
         
 
 
