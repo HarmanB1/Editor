@@ -56,7 +56,7 @@ This terminal application is designed for fullscreen use
 # macOS
 brew install ncurses cmake doxygen
 
-#Documentation 
+# Documentation 
 To view documententation:
 Visit https://harmanb1.github.io/Editor/ or run index.html from docs folder
 
