@@ -153,7 +153,21 @@ class Editor{
          */
         std::string getConfigPath();
 
-        //variables for settings
+        /* State Management */
+        /**
+         * @brief Gets the current editor state
+         * @return State object containing content, cursorX, cursorY, filepath, setting.directory
+         */
+        State getCurrentState() const;
+
+        /**
+         * @brief Applies a saved state to the editor
+         * @param state The State object to restore
+         */
+        void applyState(const State& state);
+
+
+        //Members related to Editorstate
         std::vector<int> colArr = {COLOR_BLACK,COLOR_RED,COLOR_GREEN,COLOR_YELLOW, COLOR_BLUE, COLOR_MAGENTA,COLOR_CYAN, COLOR_WHITE};
         std::vector<std::string> colArrString = {"Black", "Red", "Green", "Yellow", "Blue", "Magenta", "Cyan", "White"};
         int textcol_index=7;
@@ -174,9 +188,7 @@ class Editor{
         History editHistory;
         Clipboard editClipboard;
 
-        //state management
-        State getCurrentState() const;
-        void applyState(const State& state);
+        
 
         //time managment
         std::chrono::system_clock::time_point lastSaveTime;

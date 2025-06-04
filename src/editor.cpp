@@ -960,12 +960,12 @@ std::string Editor::getConfigPath(){
     return config.lexically_normal().string();
 }
 
-
 State Editor::getCurrentState() const{
     return State(content, cursorX, cursorY, filepath, setting.directory);
 }
 
 void Editor::applyState(const State& state){
+    //takes in state obj then sets state settings to current variables
     content = state.content;
     cursorX = state.cursorX;
     cursorY = state.cursorY;
