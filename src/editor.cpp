@@ -745,67 +745,6 @@ void Editor::saveOnClose(){
     }
 }
 
-std::string Editor::getConfigPath(){
-    namespace fs = std::filesystem;
-    fs::path cwd = fs::current_path();
-    fs::path config = cwd/ "../cfg/settings.cfg";
-    return config.lexically_normal().string();
-}
-
-
-void Editor::applyCol(){
-    start_color();
-    use_default_colors();
-    //init_pair(1, COLOR_WHITE, COLOR_BLACK);
-    init_pair(2, setting.textCol, setting.statusBarCol);
-
-
-}
-
-
-
-
-void Editor::updateStatus(){
-    int row, col;
-    getmaxyx(stdscr, row, col);
-
-    int visRows = row-2;
-
-    attron(COLOR_PAIR(2));
-    
-    mvhline(visRows, 0, ' ', col); // Draw empty line with color
-    mvhline(visRows+1, 0, ' ', col); // Draw empty line with color
-
-    std::string nameDisplay = filepath.empty() ? "No file entered" : filepath;
-    std::string posInfo = "Ln " + std::to_string(cursorY+1)+ ", Col" + std::to_string(cursorX +1);
-    std::string topLine = " ESC: Quit | ^S: Save | ^L: Load| ^F: New | ^U: Settings Menu | " + nameDisplay + " | " + setting.directory + " | " + posInfo;
-
-    //formating for time
-    auto now = std::chrono::system_clock::now();
-    std::time_t saveTime = std::chrono::system_clock::to_time_t(lastSaveTime);
-    std::tm tm = *std::localtime(&saveTime);
-    char timeStr[20];
-    std::strftime(timeStr, sizeof(timeStr), "%H: %M :%S", &tm);
-    std::string saveTiming = "Last Saved: " + std::string(timeStr);
-
-    std::string bottomLine = " ^Z: Undo | ^Y: Redo | ^X: cutline | ^C: copyline | ^V: pastline | ^D: setDirectory | "+ saveTiming+" save directory name for next session please save in settings";
-
-    if(topLine.length()>static_cast<size_t>(col)){
-        topLine = topLine.substr(0, col-3)+ "...";
-        bottomLine = bottomLine.substr(0, col-3)+ "...";
-    }
-   
-    
-
-    mvprintw(visRows, 0, topLine.c_str());
-    mvprintw(visRows+1, 0, bottomLine.c_str());
-    attroff(COLOR_PAIR(2));
-
-}
-
-
-
-        
 void Editor::settings(){
     curs_set(0);  
     int row, col;
@@ -839,6 +778,7 @@ void Editor::settings(){
         mvwprintw(settingWIN, 5, 4, "%s Word Wrap: %s", selected == 2 ? ">" : " ", setting.wordWrap ? "ON" : "OFF");
         mvwprintw(settingWIN, 6, 4, "%s Ask for Save on close %s", selected == 3 ? ">" : " ", setting.saveOnClose? "ON" : "OFF");
 
+        //sorts through colour and saves index of colour related to actual colour strong corellated to index
         for(int i =0;i< colArr.size(); i++){
             if(colArr.at(i)== setting.textCol){
                 textcol_index = i;
@@ -852,6 +792,7 @@ void Editor::settings(){
 
         }
 
+
         mvwprintw(settingWIN, 7, 4, "%s TextColour %s", selected == 4 ? ">" : " ", colArrString.at(textcol_index).c_str());
         mvwprintw(settingWIN, 8, 4, "%s Statusbar colour %s", selected == 5 ? ">" : " ", colArrString.at(statusBarCol_index).c_str());
        
@@ -860,6 +801,7 @@ void Editor::settings(){
 
         wrefresh(settingWIN);
 
+        //navigation logic
         int ch = wgetch(settingWIN);
         switch(ch){
             case KEY_UP:
@@ -906,8 +848,6 @@ void Editor::settings(){
                 break;
                    
 
-
-
         }
 
 
@@ -924,6 +864,75 @@ void Editor::settings(){
 
 
 }
+
+void Editor::applyCol(){
+    //applies col may change depending on settings
+    start_color();
+    use_default_colors();
+    //init_pair(1, COLOR_WHITE, COLOR_BLACK);
+    init_pair(2, setting.textCol, setting.statusBarCol);
+
+
+}
+
+
+void Editor::updateStatus(){
+    int row, col;
+    getmaxyx(stdscr, row, col);
+
+    int visRows = row-2;
+
+    attron(COLOR_PAIR(2));
+    
+    mvhline(visRows, 0, ' ', col); // Draw empty line with color
+    mvhline(visRows+1, 0, ' ', col); // Draw empty line with color
+
+    //prints strings
+    std::string nameDisplay = filepath.empty() ? "No file entered" : filepath;
+    std::string posInfo = "Ln " + std::to_string(cursorY+1)+ ", Col" + std::to_string(cursorX +1);
+    std::string topLine = " ESC: Quit | ^S: Save | ^L: Load| ^F: New | ^U: Settings Menu | " + nameDisplay + " | " + setting.directory + " | " + posInfo;
+
+    //formating for time
+    auto now = std::chrono::system_clock::now();
+    std::time_t saveTime = std::chrono::system_clock::to_time_t(lastSaveTime);
+    std::tm tm = *std::localtime(&saveTime);
+    char timeStr[20];
+    std::strftime(timeStr, sizeof(timeStr), "%H: %M :%S", &tm);
+    std::string saveTiming = "Last Saved: " + std::string(timeStr);
+
+    std::string bottomLine = " ^Z: Undo | ^Y: Redo | ^X: cutline | ^C: copyline | ^V: pastline | ^D: setDirectory | "+ saveTiming+" save directory name for next session please save in settings";
+
+    //format if window cuts off
+    if(topLine.length()>static_cast<size_t>(col)){
+        topLine = topLine.substr(0, col-3)+ "...";
+        bottomLine = bottomLine.substr(0, col-3)+ "...";
+    }
+   
+    
+
+    mvprintw(visRows, 0, topLine.c_str());
+    mvprintw(visRows+1, 0, bottomLine.c_str());
+    attroff(COLOR_PAIR(2));
+
+}
+
+std::string Editor::getConfigPath(){
+    namespace fs = std::filesystem;
+    fs::path cwd = fs::current_path();
+    fs::path config = cwd/ "../cfg/settings.cfg";
+    return config.lexically_normal().string();
+}
+
+
+
+
+
+
+
+
+
+
+        
 
 void Editor::saveSetting(){
     std::ofstream config_file(getConfigPath());

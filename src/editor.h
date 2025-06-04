@@ -117,12 +117,21 @@ class Editor{
          */
         void saveOnClose();
 
+        /* Settings Functions */
 
-
-
-        //settings functions 
+        /**
+         * @brief Displays and handles settings menu
+         */
         void settings();
+
+        /**
+         * @brief Applies current color settings to the UI
+         */
         void applyCol();
+
+        /**
+         * @brief Updates the status bar display
+         */
         void updateStatus();
  
        //settings related to editor settings struct
