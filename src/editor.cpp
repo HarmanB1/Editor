@@ -122,6 +122,7 @@ void Editor::run(){
   
         //checks if setting linenumb is true
         //if true, then prints the linenumber accordingly on each line
+        //otherwise prints normally 
         if(setting.lineNumb){
             lineNumb();
         }else{
@@ -137,7 +138,7 @@ void Editor::run(){
 
         }
             
-
+        //handles status bar logic
         updateStatus();
        
         //scrolling logic
@@ -612,6 +613,137 @@ void Editor::direct(std::string& directory, std::vector<std::string>& content, s
     getch();
 }
 
+void Editor::autoSave(){
+    //gets difference of now vs last and sees if it matches autosave interval
+    if(!setting.autosave) return;
+
+    auto now = std::chrono::system_clock::now();
+    auto diff = std::chrono::duration_cast<std::chrono::seconds>(now-lastSaveTime).count();
+
+    if(diff >= autoSaveInterval){
+        if(!filepath.empty()){
+            save(filepath, content, backup_content);
+            lastSaveTime = now;
+        }
+    }
+
+}
+
+
+void Editor::lineNumb(){
+    if(!setting.lineNumb) return;
+
+    int row, col;
+    getmaxyx(stdscr, row, col);
+    int visRows = row-2;
+
+    //save cursor pos
+    int saveY, saveX;
+    getyx(stdscr, saveY, saveX);
+
+    //prints linenumb
+
+    for(int i=0; i < visRows; i++){
+        int lineIdx = scrollY +i;
+        if(lineIdx < content.size()){
+            move(i, 0);
+            attron(A_REVERSE);
+            printw("%4d ", lineIdx +1);
+            attroff(A_REVERSE);
+            move(i, 5);
+            printw("%s", content[lineIdx].c_str());
+
+        }
+    }
+
+
+
+    move(saveY, saveX+5);
+}
+
+void Editor::wordWrap(){
+    if (!setting.wordWrap) return;
+
+    int row, col;
+    getmaxyx(stdscr, row, col);
+    const int maxLineWidth = col - (setting.lineNumb ? 5 : 0); // Account for line numbers
+
+    std::vector<std::string> newContent;
+    
+    for (const auto& line : content) {
+        if (line.length() <= static_cast<size_t>(maxLineWidth)) {
+            newContent.push_back(line); 
+            continue;
+        }
+
+        // Wrap the line
+        size_t pos = 0;
+        while (pos < line.length()) {
+            
+            size_t end = pos + maxLineWidth;
+            if (end > line.length()) end = line.length();
+            
+            size_t spacePos = line.rfind(' ', end);
+            if (spacePos != std::string::npos && spacePos > pos) {
+                end = spacePos + 1; // Include the space
+            }
+
+            newContent.push_back(line.substr(pos, end - pos));
+            pos = end;
+
+            // Trim leading whitespace on next line (except first split)
+            while (pos < line.length() && line[pos] == ' ') {
+                pos++;
+            }
+        }
+    }
+
+    // Update content with wrapped lines
+    if (!newContent.empty()) {
+        editHistory.pushState(getCurrentState()); 
+        content = newContent;
+        
+        // Adjust cursor position
+        if (cursorY >= content.size()) {
+            cursorY = content.size() - 1;
+        }
+        if (cursorX >= content[cursorY].size()) {
+            cursorX = content[cursorY].size();
+        }
+    }
+
+}
+
+
+void Editor::saveOnClose(){
+    if(!setting.saveOnClose) return;
+
+    if(filepath != ""){
+        clear();
+        
+        mvprintw(0,0, "Save Y/N : ");
+        refresh();
+        bool done = true;
+        while(done){
+            int ch = getch();
+            if(ch == 89 || ch == 121){
+                save(filepath, content, backup_content);
+                break;
+
+            }else if(ch == 78 || ch == 110 ){
+                break;
+
+            }else{
+                clear();
+                mvprintw(0,0, "error user did not answer y or n");
+                mvprintw(1,0, "Save Y/N : ");
+                refresh();
+            }
+
+        }
+
+    }
+}
 
 std::string Editor::getConfigPath(){
     namespace fs = std::filesystem;
@@ -852,129 +984,5 @@ void Editor::applyState(const State& state){
   
 }
 
-void Editor::autoSave(){
-    if(!setting.autosave) return;
-
-    auto now = std::chrono::system_clock::now();
-    auto diff = std::chrono::duration_cast<std::chrono::seconds>(now-lastSaveTime).count();
-
-    if(diff >= autoSaveInterval){
-        if(!filepath.empty()){
-            save(filepath, content, backup_content);
-            lastSaveTime = now;
-        }
-    }
-
-}
-
-void Editor::lineNumb(){
-    if(!setting.lineNumb) return;
-
-    int row, col;
-    getmaxyx(stdscr, row, col);
-    int visRows = row-2;
-
-    //save cursor pos
-    int saveY, saveX;
-    getyx(stdscr, saveY, saveX);
-
-    for(int i=0; i < visRows; i++){
-        int lineIdx = scrollY +i;
-        if(lineIdx < content.size()){
-            move(i, 0);
-            attron(A_REVERSE);
-            printw("%4d ", lineIdx +1);
-            attroff(A_REVERSE);
-            move(i, 5);
-            printw("%s", content[lineIdx].c_str());
-
-        }
-    }
 
 
-
-    move(saveY, saveX+5);
-}
-
-void Editor::wordWrap(){
-    if (!setting.wordWrap) return;
-
-    int row, col;
-    getmaxyx(stdscr, row, col);
-    const int maxLineWidth = col - (setting.lineNumb ? 5 : 0); // Account for line numbers
-
-    std::vector<std::string> newContent;
-    
-    for (const auto& line : content) {
-        if (line.length() <= static_cast<size_t>(maxLineWidth)) {
-            newContent.push_back(line); 
-            continue;
-        }
-
-        // Wrap the line
-        size_t pos = 0;
-        while (pos < line.length()) {
-            
-            size_t end = pos + maxLineWidth;
-            if (end > line.length()) end = line.length();
-            
-            size_t spacePos = line.rfind(' ', end);
-            if (spacePos != std::string::npos && spacePos > pos) {
-                end = spacePos + 1; // Include the space
-            }
-
-            newContent.push_back(line.substr(pos, end - pos));
-            pos = end;
-
-            // Trim leading whitespace on next line (except first split)
-            while (pos < line.length() && line[pos] == ' ') {
-                pos++;
-            }
-        }
-    }
-
-    // Update content with wrapped lines
-    if (!newContent.empty()) {
-        editHistory.pushState(getCurrentState()); 
-        content = newContent;
-        
-        // Adjust cursor position
-        if (cursorY >= content.size()) {
-            cursorY = content.size() - 1;
-        }
-        if (cursorX >= content[cursorY].size()) {
-            cursorX = content[cursorY].size();
-        }
-    }
-
-}
-
-void Editor::saveOnClose(){
-    if(!setting.saveOnClose) return;
-
-    if(filepath != ""){
-        clear();
-        
-        mvprintw(0,0, "Save Y/N : ");
-        refresh();
-        bool done = true;
-        while(done){
-            int ch = getch();
-            if(ch == 89 || ch == 121){
-                save(filepath, content, backup_content);
-                break;
-
-            }else if(ch == 78 || ch == 110 ){
-                break;
-
-            }else{
-                clear();
-                mvprintw(0,0, "error user did not answer y or n");
-                mvprintw(1,0, "Save Y/N : ");
-                refresh();
-            }
-
-        }
-
-    }
-}

@@ -97,9 +97,24 @@ class Editor{
          */
         void direct(std::string& directory, std::vector<std::string>& content, std::vector<std::string>& content_backup);
     
+        /**
+         * @brief Performs automatic saving if enabled and interval has elapsed
+         */
         void autoSave();
+
+        /**
+         * @brief Toggles display of line numbers and updates display
+         */
         void lineNumb();
+
+        /**
+         * @brief Handles word wrapping if enabled
+         */
         void wordWrap();
+
+        /**
+         * @brief Prompts to save when closing if enabled
+         */
         void saveOnClose();
 
 
