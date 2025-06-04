@@ -52,23 +52,25 @@ This terminal application is designed for fullscreen use
 # macOS
 brew install ncurses cmake doxygen
 
-
-## 💻 Installation & Full-Screen Setup
-
-This is intended to be run in fullscreen view,
-Open your terminal and run the following commands:
-
-git clone https://github.com/HarmanB1/Editor.git
-cd Editor
-
-mkdir build 
-cd build
-cmake ..
-
-make
-
 #Documentation 
 To view documententation:
 Visit https://harmanb1.github.io/Editor/ or run index.html from docs folder
+
+
+## 💻 Installation & Full-Screen Setup
+
+This is intended to be run in fullscreen view.  
+Open your terminal and run the following commands:
+
+```bash
+git clone https://github.com/HarmanB1/Editor.git
+cd Editor
+
+mkdir build
+cd build
+cmake ..
+make
+
+
 
  
