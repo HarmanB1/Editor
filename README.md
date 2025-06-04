@@ -7,6 +7,10 @@
 
 A lightweight, keyboard-focused text editor optimized for full-screen terminal use with advanced features.
 
+![Image of Text Editor Application](imgs/ImgEditor.png)
+
+
+
 ## 🚀 Key Features
 
 
